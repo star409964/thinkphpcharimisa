@@ -1,0 +1,55 @@
+<form class="form-horizontal model_insert" role="form" method="post" action="{:U('insert')}">
+
+	<div class="form-group">
+		<label for="inputEmail3" class="col-sm-3 control-label">群组名称</label>
+		<div class="col-sm-5">
+			<input type="text" name="name" class="form-control" placeholder="" datatype="s1-8" errormsg="1～8个字符！">
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
+
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">所属分类</label>
+		<div class="col-sm-4">
+			<select name="group_id" class="form-control" name="pid">
+				<volist name="list" id="vo">
+					<option value="{$vo.id}">{$vo.name}</option>
+				</volist>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">状态</label>
+		<div class="col-sm-4">
+			<select name="status" class="form-control">
+				<option value="1">启用</option>
+				<option value="0">禁用</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">备注：</label>
+		<div class="col-sm-8">
+			<textarea cols="80" rows="5" name="remark" class="form-control"></textarea>
+		</div>
+	</div>
+</form>
+<script>
+	$('.model_insert').Validform({
+		tiptype:2,
+		ajaxPost:true,
+		callback:function(data){
+			if(data.status==1){
+				$('#myModal').modal('hide');
+				$('.select-btn').click();
+				$('.Validform_close').click();//关闭表单提示框
+			}else{
+				alert(data.content);
+			}
+		}
+	});
+	
+</script>

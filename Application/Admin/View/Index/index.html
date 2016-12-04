@@ -1,0 +1,180 @@
+<!-- 引入模板标签 -->
+<layout name="Layout/layout" /> 
+<div class="row">
+	<div class="box col-md-12">
+		<button type="button" class="btn btn-primary">添加</button>
+		<button type="button" class="btn btn-danger">批量删除</button>
+	</div>
+</div>
+<div class="row">
+	<div class="box col-md-12">
+		<div class="box-inner">
+			<div class="box-header well" data-original-title="">
+				<h2><i class="glyphicon glyphicon-user"></i> 文章详情列表</h2>
+
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+					<a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="alert alert-info">
+					<form action="{:U('index')}" method="post" class="form-inline" role="form">
+						<div class="form-group">
+							<label class="sr-only" for="exampleInputEmail2">Email address</label>
+							<input type="email" class="form-control" id="exampleInputEmail2" placeholder="Enter email">
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">🔍</div>
+								<input class="form-control" type="search" placeholder="搜索内容">
+							</div>
+						</div>
+						
+						<div class="form-group">
+								<label class="sr-only" for="exampleInputEmail2"></label>
+								<input class="form-control datepicker" type="datetime" placeholder="开始时间">
+						</div>
+
+						<div class="form-group">
+								<select class="form-control">
+									<option>选择分类</option>
+									<option>2</option>
+									<option>3</option>
+									<option>4</option>
+									<option>5</option>
+								</select>
+						</div>
+
+						<button type="submit" class="btn btn-default">搜索</button>
+					</form>
+				</div>
+
+				<table class="table table-striped table-bordered responsive">
+					<thead>
+						<tr>
+							<th class="centeralign"><input type="checkbox" class="checkall" /></th>
+							<th>姓名</th>
+							<th>Date registered</th>
+							<th>Role</th>
+							<th class="text-center">Status</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+
+						<tr>
+							<td class="centeralign"><input type="checkbox" name='check_box[]' value='{$vo.uid}' checked="checked" /></td>
+							<td>Muhammad Usman</td>
+							<td class="center">2012/03/01</td>
+							<td class="center">
+								<a href="#" type="button" class="btn btn-warning btn-sm" title="<h2>Title</h2>"  data-trigger="click hover " data-html="true"
+						           data-container="body" data-toggle="popover" data-content="<h4>Popover 中的一些内容 —— options 方法</h4><img src='http://img05.tooopen.com/images/20140604/sy_62331342149.jpg'/>">
+						            显示方法
+						        </a>
+							</td>
+							<td class="center">
+								<span class="label-warning label label-default">Pending</span>
+							</td>
+							<td class="text-center">
+								<a class="btn btn-success btn-xs" href="#">
+									<i class="glyphicon glyphicon-zoom-in icon-white"></i> View
+								</a>
+								<a class="btn btn-info btn-xs" href="#">
+									<i class="glyphicon glyphicon-edit icon-white"></i> Edit
+								</a>
+								<a class="btn btn-danger btn-xs" href="#">
+									<i class="glyphicon glyphicon-trash icon-white"></i> Delete
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td class="centeralign"><input type="checkbox" name='check_box[]' value='{$vo.uid}' /></td>
+							<td>Abraham</td>
+							<td class="center">2012/03/01</td>
+							<td class="center">Member</td>
+							<td class="center">
+								<span class="label-warning label label-default">Pending</span>
+							</td>
+							<td class="center">
+								<a class="btn btn-success" href="#">
+									<i class="glyphicon glyphicon-zoom-in icon-white"></i> View
+								</a>
+								<a class="btn btn-info" href="#">
+									<i class="glyphicon glyphicon-edit icon-white"></i> Edit
+								</a>
+								<a class="btn btn-danger" href="#">
+									<i class="glyphicon glyphicon-trash icon-white"></i> Delete
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td class="centeralign"><input type="checkbox" name='check_box[]' value='{$vo.uid}' /></td>
+							<td>Brown Blue</td>
+							<td class="center">2012/03/01</td>
+							<td class="center">Member</td>
+							<td class="center">
+								<span class="label-info label label-default">Pending</span>
+							</td>
+							<td class="center">
+								<a class="btn btn-success" href="#">
+									<i class="glyphicon glyphicon-zoom-in icon-white"></i> View
+								</a>
+								<a class="btn btn-info" href="#">
+									<i class="glyphicon glyphicon-edit icon-white"></i> Edit
+								</a>
+								<a class="btn btn-danger" href="#">
+									<i class="glyphicon glyphicon-trash icon-white"></i> Delete
+								</a>
+							</td>
+						</tr>
+						<tr>
+							<td class="centeralign"><input type="checkbox" name='check_box[]' value='{$vo.uid}' /></td>
+							<td>Worth Name</td>
+							<td class="center">2012/03/01</td>
+							<td class="center">Member</td>
+							<td class="center">
+								<span class="label-success label label-default">启用</span>
+							</td>
+							<td class="center">
+								<a class="btn btn-success" href="#">
+									<i class="glyphicon glyphicon-zoom-in icon-white"></i> View
+								</a>
+								<a class="btn btn-info" href="#">
+									<i class="glyphicon glyphicon-edit icon-white"></i> Edit
+								</a>
+								<a class="btn btn-danger" href="#">
+									<i class="glyphicon glyphicon-trash icon-white"></i> Delete
+								</a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+
+				<ul class="pagination pagination-centered">
+					<li>
+						<a href="#">Prev</a>
+					</li>
+					<li class="active">
+						<a href="#">1</a>
+					</li>
+					<li>
+						<a href="#">2</a>
+					</li>
+					<li>
+						<a href="#">3</a>
+					</li>
+					<li>
+						<a href="#">4</a>
+					</li>
+					<li>
+						<a href="#">Next</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!--/span-->
+
+</div>
+<!--/row-->

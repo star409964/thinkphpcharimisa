@@ -1,0 +1,109 @@
+<div>
+	<ul class="breadcrumb">
+		<li><a href="#">Home</a></li>
+		<li><a href="#">Tables</a></li>
+	</ul>
+</div>
+
+<div class="row">
+	<div class="box col-md-12">
+		<button type="button" href="{:U('add')}" class="btn btn-primary modal_add" data-title='添加节点'>添加</button>
+		<button type="button" class="btn btn-danger" id='table_del'>批量删除</button>
+		<a href="__URL__/index/pid/{$Think.get.pid|getParentNodeId}" class="btn btn-primary">返回上一层</a>
+		<button type="button" class="btn btn-info" data-url="{:U('Node/creatauth/',array('pid'=>I('pid')))}">批量生成基本权限</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class="box col-md-12">
+		<div class="box-inner">
+			<div class="box-header well" data-original-title="">
+				<h2><i class="glyphicon glyphicon-user"></i> 文章详情列表</h2>
+
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+					<a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="alert alert-info">
+					<form action="{:U('index')}" method="post" class="form-inline search-form" role="form">
+						<div class="form-group">
+							<label class="sr-only" for="exampleInputEmail2">Email address</label>
+							<input type="email" name='email' value="{$Think.post.email}" class="form-control" placeholder="Enter email">
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">🔍</div>
+								<input class="form-control" name='search' value="{$Think.post.search}" type="search" placeholder="搜索内容">
+							</div>
+						</div>
+						
+						<div class="form-group">
+								<label class="sr-only" for="exampleInputEmail2"></label>
+								<input class="form-control" name='dtime'value="{$Think.post.dtime}" type="datetime" placeholder="开始时间" data-provide="mydatepicker">
+						</div>
+
+						<div class="form-group">
+								<select class="form-control" name="cat">
+									<option>选择分类</option>
+									<option <eq name="Think.post.cat" value="2">selected</eq> value="2">2</option>
+									<option <eq name="Think.post.cat" value="3">selected</eq> value="2">3</option>
+									<option <eq name="Think.post.cat" value="4">selected</eq> value="3">4</option>
+									<option <eq name="Think.post.cat" value="5">selected</eq> value="5">5</option>
+								</select>
+						</div>
+
+						<button type="submit" class="btn btn-default select-btn">搜索</button>
+					</form>
+				</div>
+				<form action="{:U('del')}" method="post" class="del-form">
+				<table class="table table-striped table-bordered responsive">
+					<thead>
+						<tr>
+							<th class="centeralign"><input type="checkbox" class="checkall" /></th>
+							<th>编号</th>
+							<th>群组名称</th>
+							<th>上级</th>
+							<th class="text-center">描述</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name='list' id='vo'>
+						<tr>
+							<td class="centeralign"><input type="checkbox" name='check_box[]' value='{$vo.id}'/></td>
+							<td>{$vo.id}</td>
+							<td class="center">{$vo.name}</td>
+							<td class="center">{$vo.pid}</td>
+							<td class="center">{$vo.remark}</td>
+							<td class="centeralign">{$vo['status']|showStatus=$vo['id']}</td>
+							<td class="text-center">
+								<a class="btn btn-success btn-xs" href="#">
+									<i class="glyphicon glyphicon-zoom-in icon-white"></i> View
+								</a>
+								<a class="btn btn-info btn-xs" href="#">
+									<i class="glyphicon glyphicon-edit icon-white"></i> Edit
+								</a>
+								<a class="btn btn-danger btn-xs" href="#">
+									<i class="glyphicon glyphicon-trash icon-white"></i> Delete
+								</a>
+							</td>
+						</tr>
+						</volist>
+							
+					</tbody>
+				</table>
+				</form>
+				<div class="center-block">
+					<ul class="pagination pagination-centered">
+						{$page}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/span-->
+</div>
+<!--/row-->
