@@ -9,8 +9,7 @@
 	<div class="box col-md-12">
 		<button type="button" href="{:U('add')}" class="btn btn-primary modal_add" data-title='添加节点'>添加</button>
 		<button type="button" class="btn btn-danger" id='table_del'>批量删除</button>
-		<a href="__URL__/index/pid/{$Think.get.pid|getParentNodeId}" class="btn btn-primary">返回上一层</a>
-		<button type="button" class="btn btn-info" data-url="{:U('Node/creatauth/',array('pid'=>I('pid')))}">批量生成基本权限</button>
+		<button href="{:U('user')}" class="btn btn-primary modal_add" data-title='添加用户到群组'>添加用户到组</button>
 	</div>
 </div>
 
@@ -80,14 +79,11 @@
 							<td class="center">{$vo.remark}</td>
 							<td class="centeralign">{$vo['status']|showStatus=$vo['id']}</td>
 							<td class="text-center">
-								<a class="btn btn-success btn-xs" href="#">
-									<i class="glyphicon glyphicon-zoom-in icon-white"></i> View
+								<a class="btn btn-success btn-xs ajax-list" href="{:U('power','groupId='.$vo['id'])}">
+									<i class="glyphicon glyphicon-zoom-in icon-white"></i> 权限
 								</a>
-								<a class="btn btn-info btn-xs" href="#">
+								<a class="btn btn-info btn-xs modal_edit" href="{:U('edit','id='.$vo['id'])}" data-title="编辑信息">
 									<i class="glyphicon glyphicon-edit icon-white"></i> Edit
-								</a>
-								<a class="btn btn-danger btn-xs" href="#">
-									<i class="glyphicon glyphicon-trash icon-white"></i> Delete
 								</a>
 							</td>
 						</tr>

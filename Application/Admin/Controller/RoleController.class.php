@@ -478,15 +478,15 @@ class RoleController extends CommonController {
 	 */
 	public function setUser()
 	{
-		$id     = $_POST['groupUserId'];
-		$groupId	=	$_POST['groupId'];
+		$id     = I('groupUserId');
+		$groupId	=	I('groupId');
 		$group    =   D("Role");
 		$group->delGroupUser($groupId);
 		$result = $group->setGroupUsers($groupId,$id);
 		if($result===false) {
 			$this->ajaxerror('授权失败！');
 		}else {
-			$this->ajaxsuccess('授权成功！');
+			$this->ajaxsuccess('授权成功!');
 		}
 	}
 	
