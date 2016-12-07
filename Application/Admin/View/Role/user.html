@@ -1,0 +1,68 @@
+<form class="form-horizontal">
+	<div class="form-group">
+		<label class="col-sm-3 control-label">用户组</label>
+		<div class="col-sm-4">
+			<select name="groupId" class="form-control" id="ying_yong2">
+				<option value='0'>请选择</option>
+				<volist name="groupList" id="vo">
+					<option value="{$key}" <eq name="key" value="$selectGroupId">selected</eq>>{$vo}</option>
+				</volist>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-md-12">
+			<select multiple="multiple" size="10" name="groupUserId" class="demo2">
+				<volist name="mxz" id="vo">
+					<option value="{$key}">{$vo}</option>
+				</volist>
+
+				<volist name="xz" id="vo">
+					<option value="{$key}" selected="selected">{$vo}</option>
+				</volist>
+
+			</select>
+		</div>
+	</div>
+
+</form>
+
+<script>
+	$('#ying_yong2').change(function() {
+		var groupId = $(this).val();
+		var url = '{:U("Role/user")}';
+		$("#myModal .modal-body ").load(url, {
+			"groupId": groupId
+		}, function() {});
+	});
+
+	var demo2 = $('.demo2').bootstrapDualListbox({
+        nonSelectedListLabel: '待添加人员',
+        selectedListLabel: '已添加人员',
+		preserveSelectionOnMove: 'moved',
+		moveOnSelect: false,
+		//        nonSelectedFilter: 'ion ([7-9]|[1][0-2])'
+	});
+
+	$(".demo2").on('change', function() {
+		var data = {
+			groupId: $('[name="groupId"]').val(),
+			groupUserId: $('[name="groupUserId"]').val()
+		}
+		$.ajax({
+			type: "post",
+			url: "{:U('Role/setUser')}",
+			data: data,
+			success: function(retData) {
+				if(retData.status==1){
+					console.log('返回信息', retData);
+				}else{
+					alert(retData.content);
+				}
+			}
+		});
+
+		return false;
+	});
+</script>
