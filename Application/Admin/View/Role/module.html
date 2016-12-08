@@ -1,0 +1,72 @@
+<form class="form-horizontal">
+	<input type="hidden" name="groupId" value="{$selectGroupId}" />
+	<div class="form-group">
+		<label class="col-sm-3 control-label">选择应用</label>
+		<div class="col-sm-4">
+			<select name="appId" class="form-control" id="ying_yong2">
+				<option value='0'>请选择</option>
+				 <volist name="appList" id="vo">
+					<option value="{$key}" <eq name="key" value="$selectAppId">selected</eq>>{$vo}</option>
+			     </volist>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-md-12">
+			<select multiple="multiple" size="10" name="groupModuleId" class="demo2">
+				<volist name="mxz" id="vo">
+					<option value="{$key}">{$vo}</option>
+				</volist>
+
+				<volist name="xz" id="vos">
+					<option value="{$key}" selected="selected">{$vos}</option>
+				</volist>
+
+			</select>
+		</div>
+	</div>
+
+</form>
+
+<script>
+	$('#ying_yong2').change(function() {
+		var groupId= $('[name="groupId"]').val();
+		var	appId= $('[name="appId"]').val();
+		var url = '{:U("Role/module")}';
+		$("#custom").load(url, {
+			"groupId": groupId,
+			"appId":appId
+		}, function() {});
+	});
+
+	var demo2 = $('.demo2').bootstrapDualListbox({
+        nonSelectedListLabel: '待添模块',
+        selectedListLabel: '已添加模块',
+		preserveSelectionOnMove: 'moved',
+		moveOnSelect: false,
+		//        nonSelectedFilter: 'ion ([7-9]|[1][0-2])'
+	});
+
+	$(".demo2").on('change', function() {
+		var data = {
+			groupId: $('[name="groupId"]').val(),
+			appId: $('[name="appId"]').val(),
+			groupModuleId: $('[name="groupModuleId"]').val()
+		}
+		$.ajax({
+			type: "post",
+			url: "{:U('Role/setModule')}",
+			data: data,
+			success: function(retData) {
+				if(retData.status==1){
+					console.log('返回信息', retData);
+				}else{
+					alert(retData.content);
+				}
+			}
+		});
+
+		return false;
+	});
+</script>

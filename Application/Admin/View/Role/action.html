@@ -1,0 +1,88 @@
+<form class="form-horizontal">
+	<input type="hidden" name="groupId" value="{$selectGroupId}" />
+	
+	<div class="form-group">
+		<label class="col-sm-3 control-label">选择应用</label>
+		<div class="col-sm-4">
+			<select name="appId" class="form-control select-yingy">
+				<option value='0'>请选择</option>
+				 <volist name="appList" id="vo">
+					<option value="{$key}" <eq name="key" value="$selectAppId">selected</eq>>{$vo}</option>
+			     </volist>
+			</select>
+		</div>
+	</div>
+	
+	<div class="form-group">
+		<label class="col-sm-3 control-label">选择模块</label>
+		<div class="col-sm-4">
+			<select name="moduleId" class="form-control select-yingy">
+				 <option value='999'>请选择</option>
+	                 <volist name="moduleList" id="vo">
+						<option value="{$key}" <eq name="key" value="$selectModuleId">selected</eq>>{$vo}</option>
+				     </volist>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-md-12">
+			<select multiple="multiple" size="10" name="groupActionId" class="demo2">
+				<volist name="mxz" id="vo">
+					<option value="{$key}">{$vo}</option>
+				</volist>
+
+				<volist name="xz" id="vos">
+					<option value="{$key}" selected="selected">{$vos}</option>
+				</volist>
+
+			</select>
+		</div>
+	</div>
+
+</form>
+
+<script>
+	$('.select-yingy').change(function() {
+		var groupId= $('[name="groupId"]').val();
+		var	appId= $('[name="appId"]').val();
+		var	moduleId= $('[name="moduleId"]').val();
+		var url = '{:U("Role/action")}';
+		$("#messages").load(url, {
+			"groupId": groupId,
+			"appId":appId,
+			"moduleId":moduleId
+		}, function() {});
+	});
+
+	var demo2 = $('.demo2').bootstrapDualListbox({
+        nonSelectedListLabel: '待添加权限',
+        selectedListLabel: '已添加权限',
+		preserveSelectionOnMove: 'moved',
+		moveOnSelect: false,
+		//        nonSelectedFilter: 'ion ([7-9]|[1][0-2])'
+	});
+
+	$(".demo2").on('change', function() {
+		var data = {
+			groupId: $('[name="groupId"]').val(),
+			appId: $('[name="appId"]').val(),
+			moduleId:$('[name="moduleId"]').val(),
+			groupActionId: $('[name="groupActionId"]').val()
+		}
+		$.ajax({
+			type: "post",
+			url: "{:U('Role/setAction')}",
+			data: data,
+			success: function(retData) {
+				if(retData.status==1){
+					console.log('返回信息', retData);
+				}else{
+					alert(retData.content);
+				}
+			}
+		});
+
+		return false;
+	});
+</script>

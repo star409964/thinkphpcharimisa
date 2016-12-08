@@ -1,0 +1,50 @@
+<form class="form-horizontal">
+	<input type="hidden" name="groupId" value="{$selectGroupId}" />
+	<div class="form-group">
+		<div class="col-md-12">
+			<select multiple="multiple" size="10" name="groupAppId" class="demo2">
+				<volist name="mxz" id="vo">
+				 <option value="{$key}">{$vo}</option>
+               </volist>
+
+				<volist name="xz" id="vo">
+					<option value="{$key}" selected="selected">{$vo}</option>
+				</volist>
+
+			</select>
+		</div>
+	</div>
+
+</form>
+
+<script>
+
+	var demo2 = $('.demo2').bootstrapDualListbox({
+        nonSelectedListLabel: '待添加人员',
+        selectedListLabel: '已添加人员',
+		preserveSelectionOnMove: 'moved',
+		moveOnSelect: false,
+		//        nonSelectedFilter: 'ion ([7-9]|[1][0-2])'
+	});
+
+	$(".demo2").on('change', function() {
+		var data = {
+			groupId: $('[name="groupId"]').val(),
+			groupAppId: $('[name="groupAppId"]').val()
+		}
+		$.ajax({
+			type: "post",
+			url: "{:U('Role/setApp')}",
+			data: data,
+			success: function(retData) {
+				if(retData.status==1){
+					console.log('返回信息', retData);
+				}else{
+					alert(retData.content);
+				}
+			}
+		});
+
+		return false;
+	});
+</script>
