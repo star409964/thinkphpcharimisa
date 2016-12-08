@@ -81,6 +81,9 @@ class RoleController extends CommonController {
 	 +----------------------------------------------------------
 	 */	
 	public function power(){
+		$map['id'] = I("groupId");
+		$name = M("Role")->where($map)->getField('name');
+		$this->assign('rolename',$name);
 		$this->display();
 	}
 	/**

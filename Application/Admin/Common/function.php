@@ -59,3 +59,7 @@ function getParentNodeId($pid){
 	$id = D('Node')->where('id='.$pid)->getField('pid');}
 	return $id?$id:0;
 }
+
+function pwdHash($password, $type = 'md5') {
+	return hash ( $type, $password );
+}

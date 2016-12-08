@@ -1,14 +1,14 @@
 <div>
 	<ul class="breadcrumb">
-		<li><a href="#">Home</a></li>
-		<li><a href="#">Tables</a></li>
+		<li><a href="{:U('Role/index')}" class="ajax-list">群组管理</a></li>
+		<li><a href="#">权限管理</a></li>
 	</ul>
 </div>
 <div class="row">
     <div class="box col-md-12">
-        <div class="box-inner homepage-box">
+        <div class="box-inner">
             <div class="box-header well">
-                <h2><i class="glyphicon glyphicon-th"></i> Tabs</h2>
+                <h2><i class="glyphicon glyphicon-leaf"></i>给【{$rolename}】分配权限</h2>
 
                 <div class="box-icon">
                     <a href="#" class="btn btn-setting btn-round btn-default"><i
@@ -21,41 +21,17 @@
             </div>
             <div class="box-content">
                 <ul class="nav nav-tabs" id="myTab">
-                    <li class="active"><a href="#info">Info</a></li>
-                    <li><a href="#custom">Custom</a></li>
-                    <li><a href="#messages">Messages</a></li>
+                    <li class="active"><a href="#info" data-href="{:U('Role/app',array('groupId'=>I('groupId')))}" data-toggle="tab" id="tap_first">应用授权</a></li>
+                    <li><a href="#custom" data-href="{:U('Role/module',array('groupId'=>I('groupId')))}" data-toggle="tab">模块授权</a></li>
+                    <li><a href="#messages" data-href="{:U('Role/action',array('groupId'=>I('groupId')))}" data-toggle="tab">操作授权</a></li>
                 </ul>
 
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active" id="info">
-                        <h3>Charisma
-                            <small>a full featured template</small>
-                        </h3>
-                        <p>It's a full featured, responsive template for your admin panel. It's optimized for tablets
-                            and mobile phones.</p>
-
-                        <p>Check how it looks on different devices:</p>
-                        <a href="http://www.responsinator.com/?url=usman.it%2Fthemes%2Fcharisma"
-                           target="_blank"><strong>Preview on iPhone size.</strong></a>
-                        <br>
-                        <a href="http://www.responsinator.com/?url=usman.it%2Fthemes%2Fcharisma"
-                           target="_blank"><strong>Preview on iPad size.</strong></a>
                     </div>
                     <div class="tab-pane" id="custom">
-                        <h3>Custom
-                            <small>small text</small>
-                        </h3>
-                        <p>Sample paragraph.</p>
-
-                        <p>Your custom text.</p>
                     </div>
                     <div class="tab-pane" id="messages">
-                        <h3>Messages
-                            <small>small text</small>
-                        </h3>
-                        <p>Sample paragraph.</p>
-
-                        <p>Your custom text.</p>
                     </div>
                 </div>
             </div>
@@ -63,3 +39,34 @@
     </div>
     <!--/span-->
 </div><!--/row-->
+<script type="text/javascript">
+	$(function(){
+	
+	var url = $('#tap_first').data("href");
+	var id = $('#tap_first').attr("href");
+	ajaxhtml(url,id);
+	
+	
+	$('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+		// 获取已激活的标签页的名称
+		var activeTab = $(e.target).text(); 
+		// 获取前一个激活的标签页的名称
+		var previousTab = $(e.relatedTarget).text(); 
+		var url = $(e.target).data('href');
+		var id = $(e.target).attr("href");
+		$('.tab-pane').html('');
+		ajaxhtml(url,id);
+	});
+	
+	function ajaxhtml(url,id){
+		$.ajax({
+			type:"get",
+			url:url,
+			success:function(retData){
+				$(id).html(retData);
+			}
+		});
+	}
+	
+});
+</script>

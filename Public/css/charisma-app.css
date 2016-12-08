@@ -731,3 +731,11 @@ ul.github-buttons li {
 .popover-content img{
 	width: 100%;
 }
+
+.tab-pane{
+	padding: 25px;
+}
+/*隐藏表单验证的加载提示*/
+#Validform_msg{
+		display: none;
+	}

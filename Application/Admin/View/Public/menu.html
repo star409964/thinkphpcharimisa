@@ -5,34 +5,43 @@
 
 			</div>
 			<ul class="nav nav-pills nav-stacked main-menu">
-				<li class="nav-header">Main</li>
+				<li class="nav-header">系统菜单</li>
 				
-				
-				<!--<li class="nav-header hidden-md">Sample Section</li>-->
 				<li>
-					<a class="ajax-link" href="#"><i class="glyphicon glyphicon-align-justify"></i><span> Tables</span></a>
+					<a class="ajax-list" href="{:U('Node/index')}"><i class="glyphicon glyphicon-wrench"></i><span> 系统设置</span></a>
 				</li>
 				
 				<li class="accordion">
-					<a href="#"><i class="glyphicon glyphicon-plus"></i><span>系统管理</span></a>
+					<a href="#"><i class="glyphicon glyphicon-cog"></i><span>系统管理</span></a>
 					<ul class="nav nav-pills nav-stacked">
 						<li>
 							<a href="{:U('Node/index')}" class="ajax-list">节点管理</a>
 						</li>
 						<li>
 							<a href="{:U('Role/index')}" class="ajax-list">群组管理</a>
+						</li>
+						<li>
+							<a href="{:U('User/index')}" class="ajax-list">系统用户</a>
 						</li>
 					</ul>
 				</li>
 				
+				
+				
+				
+				
+				
 				<li class="accordion">
-					<a href="#"><i class="glyphicon glyphicon-plus"></i><span>系统管理</span></a>
+					<a href="#"><i class="glyphicon glyphicon-plus"></i><span>微信管理</span></a>
 					<ul class="nav nav-pills nav-stacked">
 						<li>
 							<a href="{:U('Node/index')}" class="ajax-list">节点管理</a>
 						</li>
 						<li>
 							<a href="{:U('Role/index')}" class="ajax-list">群组管理</a>
+						</li>
+						<li>
+							<a href="{:U('User/index')}" class="ajax-list">系统用户</a>
 						</li>
 					</ul>
 				</li>

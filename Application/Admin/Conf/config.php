@@ -8,4 +8,6 @@ return array(
 	//默认成功跳转对应的模板文件
 	'TMPL_ACTION_SUCCESS' => 'Public:success',
 	'SHOW_PAGE_TRACE' =>true, //页面trace 调试显示
+	'LOAD_EXT_CONFIG'=>'info', // 加载数据库配置文件
+	
 );
