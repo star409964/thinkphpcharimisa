@@ -293,7 +293,7 @@ abstract class Controller {
             exit ;
         }
     }
-    
+
    /**
      * 析构方法
      * @access public
