@@ -9,6 +9,17 @@ class IndexController extends Controller {
 	trace(M()->_sql(),'最后sql语句');
     	$this->display();
     }
+	
+	
+	
+	public function cookisT(){
+		cookie('name','lyx10000000'); 
+		redirect('http://weixint.sylyx.cn/views/ticket/555.html');
+	}
+	
+	
+	
+	
 	public function ajaxindex(){
     		$list = M("Node")->select();
 			$recordsTotal = $recordsFiltered = M("Node")->count();
@@ -20,13 +31,13 @@ $searchs = I('search');//获取前台传过来的过滤条件
 //分页
 $start = $_GET['start'];//从多少开始
 $length = $_GET['length'];//数据长度
-
-echo json_encode(array(
-    "draw" => intval($draw),
-    "recordsTotal" => intval($recordsTotal),
-    "recordsFiltered" => intval($recordsFiltered),
-    "data" => $list
-),JSON_UNESCAPED_UNICODE);
+	
+	echo json_encode(array(
+	    "draw" => intval($draw),
+	    "recordsTotal" => intval($recordsTotal),
+	    "recordsFiltered" => intval($recordsFiltered),
+	    "data" => $list
+	),JSON_UNESCAPED_UNICODE);
 
     }
 }
