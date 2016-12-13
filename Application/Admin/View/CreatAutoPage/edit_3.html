@@ -1,0 +1,16 @@
+<script>
+	$('.model_insert').Validform({
+		tiptype:2,
+		ajaxPost:true,
+		callback:function(data){
+			if(data.status==1){
+				$('#myModal').modal('hide');
+				$('.select-btn').click();
+				$('.Validform_close').click();//关闭表单提示框
+			}else{
+				alert(data.content);
+			}
+		}
+	});
+	
+</script>

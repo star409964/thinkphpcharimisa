@@ -1,0 +1,43 @@
+
+						<thead>
+							<tr>
+								<th class="centeralign"><input type="checkbox" class="checkall" /></th>
+								<th>编号</th>
+								<th>名称</th>
+								<th>显示名称</th>
+								<th class="text-center">菜单分组</th>
+								<th>状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<volist name='list' id='vo'>
+								<tr>
+									<td class="centeralign"><input type="checkbox" name='check_box[]' value='{$vo.id}' /></td>
+									<td>{$vo.id}</td>
+									<td class="center">
+										<egt name="level" value="3">{$vo.name}
+											<else/>
+											<a href="__URL__/index/pid/{$vo.id}/" class="ajax-list">{$vo.name}</a>
+										</egt>
+									</td>
+									<td class="center">{$vo.title}</td>
+									<td class="center">
+										<eq name="level" value="2">{$vo.group_id|getNodeGroupName}</eq>
+									</td>
+									<td class="centeralign">{$vo['status']|showStatus=$vo['id']}</td>
+									<td class="text-center">
+										<a class="btn btn-success btn-xs" href="#">
+											<i class="glyphicon glyphicon-zoom-in icon-white"></i> View
+										</a>
+										<a class="btn btn-info btn-xs modal_edit" href="{:U('edit','id='.$vo['id'])}" data-title="编辑信息">
+											<i class="glyphicon glyphicon-edit icon-white"></i> Edit
+										</a>
+										<a class="btn btn-danger btn-xs" href="#">
+											<i class="glyphicon glyphicon-trash icon-white"></i> Delete
+										</a>
+									</td>
+								</tr>
+							</volist>
+
+						</tbody>
