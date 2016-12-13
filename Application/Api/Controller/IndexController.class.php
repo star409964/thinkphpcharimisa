@@ -15,7 +15,9 @@ use Think\Controller;
 class IndexController extends Controller {
 	
 	public function index(){
-		echo 'ss';
+		$wx = A("WxChat",'Logic');
+		$wx->getAccessToken(3);
+		echo 's';
 	}
 	
 	public function upload() {
