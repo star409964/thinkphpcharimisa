@@ -30,6 +30,7 @@ class WxChatBaseLogic {
 			$appSecret = self::$accountList[$id]['appsecret'];
 			$url = "https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=$appId&secret=$appSecret";
 			$res = json_decode(httpGet($url), TRUE);
+			//dump($res);
 			SetE($res);
 			$access_token = $res['access_token'];
 			if ($access_token) {

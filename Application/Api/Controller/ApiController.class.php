@@ -71,7 +71,8 @@ class ApiController extends Controller {
 			 $info = $mo->where($map)->find();
 			 session('wxopenid',$token_openid['openid']);
 			 if($info==FALSE){
-			 	$token_openid['user_base'] = $mo->uuid();
+			 	$token_openid['user_base'] = 'wx'.$wxid.'-'.$token_openid['openid'];
+			 	$token_openid['userid'] = $mo->uuid();
 			 	$ret = $mo->add($token_openid);
 				D("UserBase")->add(array('userid'=>$token_openid['user_base']));// 主表
 				if($ret!=FALSE){
@@ -81,6 +82,7 @@ class ApiController extends Controller {
 			 }else{
 			 		$redis = A('Redis','Event');
 					$redis->setUserInfo($info);
+					$token_openid['user_base'] = $info['user_base'];
 			 }
 			 
 			if(strpos($resurl,'?')!=FALSE){
@@ -120,6 +122,14 @@ class ApiController extends Controller {
 		$notify->Notify($wxid,$notifyurl);
 	}
 	
+	/*
+	 * 对外公众号消息通知接口
+	 */
+	public function sendNotice(){
+		$notice = A('WxNotice','Logic');
+		$info = array('1','2','3','4');
+		$notice->wxSendNotice(1,$info,'test','notice100');
+	}
 	
 	public function tt(){
 		//echo U('justBaseAouthMore',array('id'=>I('wxid')),'',TRUE);

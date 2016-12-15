@@ -39,7 +39,7 @@ class RedisEvent
 	 * 用户登录信息放入 redis里面
 	 */
 	 public function setUserInfo($info){
-		$this->redis->hMset($info['user_base'], $info);
+		$this->redis->hMset(C('REDIS_USER_PREFIX').$info['user_base'], $info);
 		$this->redis->expire($info['user_base'],7200);
 	 }
 	 /*
@@ -47,7 +47,7 @@ class RedisEvent
 	 */
 	 
 	 public function getUserInfo($user_base){
-		return $this->redis->HgetAll($user_base);
+		return $this->redis->HgetAll(C('REDIS_USER_PREFIX').$user_base);
 		
 	 }
 	

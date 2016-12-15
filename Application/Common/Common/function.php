@@ -83,11 +83,9 @@ function createNonceStr($length = 16) {
 function SetE($e){
 	if($e!=null){
 		if(isset($e['errcode']) && $e['errcode']!=0){
-			$res = ReturnWxError($e);
-			if(!empty($res)){
-			E($res);
-			}else{
-				E('数据异常');
+			$res = ReturnWxError($e['errcode']);
+			if($res!='ok'){
+				E($res);
 			}
 		}
 	}else{
@@ -141,6 +139,7 @@ function ReturnWxError($k){
 					'40032'	=> '不合法的openid列表长度',
 					'40033'	=> '不合法的请求字符，不能包含\uxxxx格式的字符',
 					'40035'	=> '不合法的参数',
+					'40037'	=> '没有次模版id',
 					'40038'	=> '不合法的请求格式',
 					'40039'	=> '不合法的URL长度',
 					'40050'	=> '不合法的分组',
