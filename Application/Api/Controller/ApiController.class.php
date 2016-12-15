@@ -84,6 +84,10 @@ class ApiController extends Controller {
 					$redis->setUserInfo($info);
 					$token_openid['user_base'] = $info['user_base'];
 			 }
+			 //商客 和 普通用户 建立联系
+			 $skE = A("Sk",'Event');
+			 $art = convertUrlQuery($resurl);
+			 $skE->bingWxUserSk($token_openid['user_base'],$art['companycode'],$art['logincode']);
 			 
 			if(strpos($resurl,'?')!=FALSE){
 					$resurl = $resurl.'&uuid='.$token_openid['user_base'];
@@ -140,13 +144,27 @@ class ApiController extends Controller {
 //		$info = array('username'=>'mike1','tel'=>'15040249808','user_base'=>'12345678');
 //		$use->setUserInfo($info);
 //		dump($use->getUserInfo('12345678'));
+		//微信支付测试
+//		$wxpay = A('WxPay',"Logic");
+//		//$wxpay = new \Api\Logic\WxChatLogic
+//		$json = $wxpay->gzhPay(1);
+//		 $this->assign('json',$json);
+//		$this->display();
 
-		$wxpay = A('WxPay',"Logic");
-		//$wxpay = new \Api\Logic\WxChatLogic
-		$json = $wxpay->gzhPay(1);
-		 $this->assign('json',$json);
-		$this->display();
-		
+//
+//				$mps['login_name'] = 'LA00044wangnan';
+//				$user = D("SysUser")->where($mps)->find();
+//				echo 's21s';
+//				dump($user);
+//				$mps['code'] = 'LA00044';
+//				$rest = D('SysUser')->join('JOIN __SYS_OFFICE__ ON __SYS_USER__.office_id = __SYS_OFFICE__.id')->where($mps)->field('code')->select(false);
+//				dump($rest);
+//				
+				//商客和 用户绑定 测试
+//				 $skE = A("Sk",'Event');
+//			     $skE->bingWxUserSk('222222');
+                $url = "http://www.baidu.com?abc=123&user=mike&mobile=15040249808";
+				dump(convertUrlQuery($url));
 		
 	}
 }

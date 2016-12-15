@@ -61,6 +61,29 @@ class SkEvent
 		}
 	}
 	
+	/*
+	 * 绑定用户和商客信息
+	 */
+	public function bingWxUserSk($uuid,$code,$login_name){
+		if($code && $login_name){
+			$map['user_id'] = array('like',$uuid);
+			$ret = D('UserWxSk')->where($map)->find();
+			if($ret==FALSE){ 
+				$mps['login_name'] = $login_name;
+				$mps['code'] = $code;
+				$rest = D('SysUser')->join('JOIN __SYS_OFFICE__ ON __SYS_USER__.office_id = __SYS_OFFICE__.id')->where($mps)->field('code')->find();
+				if($rest!=false){//合法-存入对应表
+					$mps['user_id'] = $uuid;
+					$rs = D('UserWxSk')->add($mps);
+					trace('插入数据库',$rs);
+				}
+			}
+		}
+		
+	}
+	
+	
+	
 	public function tt(){
 		echo U('Api/skNotify',array('wxid'=>1),'',TRUE);
 	}
