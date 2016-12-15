@@ -1,0 +1,360 @@
+<div class="conditionMenu ng-scope" id="conditionMenuDesigner">
+	<input type="hidden" id="menusid" value="{$Think.request.mid}" />
+	<div class="app clearfix">
+		<!--左侧的菜单显示-->
+		<div class="app-preview">
+			<div class="app-header"></div>
+			<div class="app-content">
+				<div class="inner">
+					<div class="title">
+						<h1><span class="ng-binding">{$title}</span></h1>
+					</div>
+				</div>
+				<div class="nav-menu">
+					<div class="js-quickmenu nav-menu-wx clearfix has-nav-3" ng-class="{0 : 'has-nav-0', 1 : 'has-nav-1', 2: 'has-nav-2', 3: 'has-nav-3', 4 : 'has-nav-3'}[context.group.button.length + 1]">
+						<ul class="nav-group designer-x ui-sortable">
+						<neq name='list' value=''>
+						<volist name='list' id='vo'>
+							<li class="nav-group-item js-sortable ng-scope">
+								<a class="ng-binding click-item" href="javascript:void(0);" title="拖动排序" data-id="{$vo.id}">
+									<i class="glyphicon glyphicon-minus"></i> {$vo.name}
+								</a>
+									<neq name='vo.children' value=''>
+										<dl class="designer-y ui-sortable">
+											<volist name='vo.children' id='ch'>
+												<dd class="ng-scope">
+													<a class="ng-binding click-item" href="javascript:void(0)" data-id="{$ch.id}">{$ch.name}</a>
+												</dd>
+											</volist>
+									</neq>
+										<lt name="vo.children|count" value="5">
+											<dd class="js-not-sortable ng-scope">
+												<a href="javascript:void(0)" onclick="childMenu(this)"><i class="glyphicon glyphicon-plus"></i></a>
+											</dd>
+										</lt>	
+										</dl>
+							</li>
+							</volist>
+						</neq>	
+							<lt name="list|count" value="3">
+								<li class="nav-group-item js-sortable ng-scope">
+									<a class="ng-binding" href="javascript:void(0);" title="点击添加菜单" onclick="topMenu(this)" data-id='top'>
+										<i class="glyphicon glyphicon-plus"></i> 添加
+									</a>
+								</li>
+							</lt>
+						
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<!--右侧的详情信息-->
+		<div class="app-side">
+			<div class="menu app-conditionMenu-edit">
+				<div class="arrow-left"></div>
+				<div class="inner">
+					<div class="panel panel-default">
+						<div class="panel-body form-horizontal">
+							
+							<div class="card ng-scope" ng-if="context.group.button.length > 0">
+								<div class="btns">
+									<a href="javascript:;"><i class="fa fa-times"></i></a>
+								</div>
+								<div class="nav-region">
+									<div class="first-nav">
+										<h3>菜单设置</h3>
+										<form class="alert">
+											<input type="hidden" name="id" value="" />
+											<div class="form-group">
+												<label class="control-label col-xs-2">菜单名称</label>
+												<div class="col-xs-10">
+													<div class="input-group">
+														<input class="form-control ng-pristine ng-untouched ng-valid ng-not-empty" id="menu_title"  type="text" data-id="" name="name">
+														<div class="input-group-btn">
+															<span class="btn btn-primary"><i class="fa fa-github-alt"></i> 添加表情</span>
+														</div>
+													</div>
+												</div>
+											</div>
+											<!-- ngIf: context.activeType == 2 || (context.activeType == 1 && context.activeItem.sub_button.length == 0) -->
+											<div class="form-group ng-scope">
+												<label class="control-label col-xs-2">菜单动作</label>
+												<div class="col-xs-10 menu-action">
+													<span>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type" value="view" type="radio"> 链接
+													</label>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type" value="click"  type="radio"> 触发关键字
+													</label>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type"  value="scancode_push"  type="radio"> 扫码
+													</label>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type"  value="scancode_waitmsg"  type="radio"> 扫码（等待信息）
+													</label>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type"  value="pic_sysphoto"  type="radio"> 系统拍照发图
+													</label>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type"  value="pic_photo_or_album"  type="radio"> 拍照或者相册发图
+													</label>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type"  value="pic_weixin"  type="radio"> 微信相册发图
+													</label>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type"  value="location_select"  type="radio"> 地理位置
+													</label>
+													</span>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type"  value="media_id"  type="radio"> 回复素材
+													</label>
+													<label class="radio-inline">
+														<input class="ng-pristine ng-untouched ng-valid ng-not-empty" name="type"  value="view_limited"  type="radio"> 跳转图文
+													</label>
+													
+													
+													<div data-type="view">
+														<hr>
+														<div class="input-group">
+															<input class="form-control ng-pristine ng-untouched ng-valid ng-not-empty ajaxUpdate"  type="text" name="url">
+															<div class="input-group-btn">
+																<button class="btn btn-primary" id="search"><i class="fa fa-external-link"></i> 系统链接</button>
+															</div>
+														</div>
+														<span class="help-block">指定点击此菜单时要跳转的链接（注：链接需加http://）</span>
+														<span class="help-block"><strong>注意: 由于接口限制. 如果你没有网页oAuth接口权限, 这里输入链接直接进入微站个人中心时将会有缺陷(有可能获得不到当前访问用户的身份信息. 如果没有oAuth接口权限, 建议你使用图文回复的形式来访问个人中心)</strong></span>
+													</div>
+													
+													
+													<div data-type="media_id" style="display: none;">
+														<hr>
+														<div class="input-group">
+															<input class="form-control ng-pristine ng-valid ng-touched ng-not-empty ajaxUpdate" type="text" name="media_id">
+															<div class="input-group-btn">
+																<button class="btn btn-primary" id="media_id"><i class="fa fa-external-link"></i> 选择素材</button>
+															</div>
+														</div>
+														<span class="help-block">公众平台的素材id</span>
+													</div>
+													
+													
+												</div>
+											</div>
+											<!-- end ngIf: context.activeType == 2 || (context.activeType == 1 && context.activeItem.sub_button.length == 0) -->
+										</form>
+									<!--form结束-->
+									</div>
+								</div>
+							</div>
+							<!-- end ngIf: context.group.button.length > 0 -->
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--底部上架-->
+	<div class="shop-preview col-xs-12 col-sm-9 col-lg-10">
+		<div class="text-center alert alert-warning" style="background:#faebcc">
+			<span class="btn btn-primary ng-binding" id="btn-submit" ng-click="context.group.button.length > 0 ? context.submit() : context.remove()">上架</span>
+		</div>
+	</div>
+</div>
+<!--<script src="__PUBLIC__/js/draggabilly.pkgd.min.js" type="text/javascript" charset="utf-8"></script>-->
+
+<script type="text/javascript">
+//	var draggie = new Draggabilly( '.js-sortable', {
+//// options...
+// 	 axis: 'x'
+//});
+
+/*
+ * 一级菜单 添加动作
+ */
+function topMenu(e){
+	$('.active').removeClass('active');
+	var num = $(e).parents('ul').children().length;
+	var that = $(e).parent('li');
+	console.log(num);
+	addTopMenuAjax($(e).data('id'),that,num);
+	
+}
+/*
+ * 二级菜单 添加动作
+ */
+function childMenu(e){
+	$('.active').removeClass('active');
+	var that = $(e).parent('dd');
+	var num = $(e).parents('dl').children().length;
+	console.log(num);
+	addChildMenuAjax($(that).parent('dl').prev('a').data('id'),that,num);
+	
+}
+/*
+ * 默认菜单样式
+ */
+function topMenuItem(item){
+	var html = '<li class="nav-group-item js-sortable ng-scope active">'+
+								'<a class="ng-binding click-item" href="javascript:void(0);" data-id="'+item.id+'">'+
+									'<i class="glyphicon glyphicon-minus"></i>'+item.name+
+								'</a>'+
+								'<dl class="designer-y ui-sortable">'+
+									'<dd class="js-not-sortable ng-scope">'+
+										'<a href="javascript:void(0)" onclick="childMenu(this)"><i class="glyphicon glyphicon-plus"></i></a>'+
+									'</dd>'+
+								'</dl>'+
+							'</li>';
+		return html;					
+}
+/*
+ * 默认二级菜单样式
+ */
+function childMenuItem(item){
+	var html = '<dd class="ng-scope active">'+
+				'<a class="ng-binding click-item" href="javascript:void(0)" data-id="'+item.id+'">'+item.name+'</a>'+
+				'</dd>';
+		return html;		
+}
+/*
+ * 添加一级菜单的 insert 请求
+ */
+function addTopMenuAjax(id,that,num){
+	$.ajax({
+		type:"post",
+		url:"{:U('Menus/ajaxAdd')}",
+		data:{
+			id:id,
+			menusid:$('#menusid').val()
+				},
+		dataType:'json',
+		success:function(retData){
+			console.log(JSON.stringify(retData));
+			console.log(that);
+			if(retData.status==1){
+				that.before(topMenuItem(retData.result));
+				$('#menu_title').val(retData.result.name);
+				$('input[name="id"]').val(retData.result.id);
+				if(num==3){
+						that.remove();
+					}
+				$(".ajaxUpdate").off().on('blur',function(){
+						var type = $(this).attr('name');
+						if(type=="view"){
+							ajaxUpdate($(this).val(),'');
+						}else{
+							ajaxUpdate('',$(this).val());
+						}
+					})
+			}else{
+				alert(retData.msg);
+			}
+		}
+	});
+}
+
+/*
+ * 添加二级菜单的 insert 请求
+ */
+function addChildMenuAjax(id,that,num){
+	$.ajax({
+		type:"post",
+		url:"{:U('Menus/ajaxAdd')}",
+		data:{
+			id:id,
+			menusid:$('#menusid').val(),
+				},
+		dataType:'json',
+		success:function(retData){
+			console.log(JSON.stringify(retData));
+			console.log(that);
+			if(retData.status==1){
+				that.before(childMenuItem(retData.result));
+				$('#menu_title').val(retData.result.name);
+				$('input[name="id"]').val(retData.result.id);
+					if(num==5){
+						that.remove();
+					}
+				$(".ajaxUpdate").off().on('blur',function(){
+						var type = $(this).attr('name');
+						if(type=="view"){
+							ajaxUpdate($(this).val(),'');
+						}else{
+							ajaxUpdate('',$(this).val());
+						}
+					})
+			}else{
+				alert(retData.msg);
+			}
+		}
+	});
+}
+
+/*
+ * 对radio 绑定事件
+ */
+$('[type="radio"]').on('change',function(){
+	var type = $(this).val();
+	if(type=='media_id' || type == 'view_limited'){
+		$('[data-type="view"]').css('display','none');
+		$('[data-type="media_id"]').css('display','block');
+	}else{
+		$('[data-type="view"]').css('display','block');
+		$('[data-type="media_id"]').css('display','none');
+	}
+})
+
+/*
+ * 选中菜单执行 编辑状态
+ */
+$(document).off('click','.click-item').on('click','.click-item',function(e){
+		$('.active').removeClass('active');
+		$(this).parent().addClass('active');
+		$.ajax({
+			type:"post",
+			url:"{:U('Menus/ajaxEdit')}",
+			data:{id:$(this).data('id')},
+			dataType:'json',
+			success:function(retData){
+				if(retData.status==1){
+					$('#menu_title').val(retData.result.name);
+					$("input[type=hidden][name=id]").val(retData.result.id);
+					$("input[type=radio][name=type][value='"+retData.result.type+"']").attr("checked",true); 
+					$("input[type=radio][name=type][value='"+retData.result.type+"']").click();
+					$("input[type=text][name=url]").val(retData.result.url);
+					$("input[type=text][name=media_id]").val(retData.result.media_id);
+					$(".ajaxUpdate").off().on('blur',function(){
+						var type = $(this).attr('name');
+						if(type=="view"){
+							ajaxUpdate($(this).val(),'');
+						}else{
+							ajaxUpdate('',$(this).val());
+						}
+					})
+				}else{
+					alert(retData.msg);
+				}
+			}
+		});
+})
+
+function ajaxUpdate(turl,media_id){
+	$.ajax({
+		type:"post",
+		url:"{:U('Menus/ajaxUpdate')}",
+		data:$('form').serialize(),
+		dataType:'json',
+		success:function(retData){
+			if(retData.status==1){
+				var id = $('input[name="id"]').val();
+				$('[data-id="'+id+'"]').html($('input[name="name"]').val());
+			}else{
+				
+			}
+			console.log(retData);
+		}
+	});
+}
+</script>

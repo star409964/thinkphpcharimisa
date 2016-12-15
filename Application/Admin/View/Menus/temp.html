@@ -1,0 +1,39 @@
+
+							<li class="nav-group-item js-sortable ng-scope" ng-repeat="but in context.group.button" ng-class="{0 : '', 1 : 'active'}[context.activeItem == but ? 1 : 0 ]">
+								<input data-role="parent" data-hash="object:5" type="hidden">
+								<a class="ng-binding" href="javascript:void(0);" title="拖动排序" ng-click="context.editBut('', but);">
+									<i class="glyphicon glyphicon-minus" ng-show="but.sub_button.length > 0"></i> 城“惠”玩
+								</a>
+								<dl class="designer-y ui-sortable">
+									<!-- ngRepeat: subBut in but.sub_button -->
+									<dd class="ng-scope" ng-repeat="subBut in but.sub_button" ng-class="{0 : '', 1 : 'active'}[context.activeItem == subBut ? 1 : 0 ]">
+										<input data-role="sub" data-hash="object:20" type="hidden">
+										<a class="ng-binding" href="javascript:void(0)" ng-click="context.editBut(subBut, but);">游</a>
+									</dd>
+									<!-- end ngRepeat: subBut in but.sub_button -->
+									<!-- ngIf: but.sub_button.length < 5 -->
+									<dd ng-if="but.sub_button.length < 5" class="js-not-sortable ng-scope">
+										<a href="javascript:void(0)" ng-click="context.addSubBut(but);"><i class="glyphicon glyphicon-plus"></i></a>
+									</dd>
+									<!-- end ngIf: but.sub_button.length < 5 -->
+								</dl>
+							</li>
+							<li class="nav-group-item js-sortable ng-scope" ng-repeat="but in context.group.button" ng-class="{0 : '', 1 : 'active'}[context.activeItem == but ? 1 : 0 ]">
+								<input data-role="parent" data-hash="object:6" type="hidden">
+								<a class="ng-binding" href="javascript:void(0);" title="拖动排序" ng-click="context.editBut('', but);">
+									<i class="glyphicon glyphicon-minus" ng-show="but.sub_button.length > 0"></i> “惠”当家
+								</a>
+								<dl class="designer-y ui-sortable">
+									<!-- ngRepeat: subBut in but.sub_button -->
+									<dd class="ng-scope" ng-repeat="subBut in but.sub_button" ng-class="{0 : '', 1 : 'active'}[context.activeItem == subBut ? 1 : 0 ]">
+										<input data-role="sub" data-hash="object:24" type="hidden">
+										<a class="ng-binding" href="javascript:void(0)" ng-click="context.editBut(subBut, but);">见义勇为</a>
+									</dd>
+									<!-- end ngRepeat: subBut in but.sub_button -->
+									<!-- ngIf: but.sub_button.length < 5 -->
+									<dd ng-if="but.sub_button.length < 5" class="js-not-sortable ng-scope">
+										<a href="javascript:void(0)" ng-click="context.addSubBut(but);"><i class="glyphicon glyphicon-plus"></i></a>
+									</dd>
+									<!-- end ngIf: but.sub_button.length < 5 -->
+								</dl>
+							</li>

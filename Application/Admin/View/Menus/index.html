@@ -1,0 +1,74 @@
+<div class="row">
+	<div class="box col-md-12">
+		<button type="button" href="{:U('add')}" class="btn btn-primary modal_add" data-title='添加节点'>添加</button>
+		<button type="button" class="btn btn-danger" id='table_del'>批量删除</button>
+	</div>
+</div>
+<div class="row">
+	<div class="box col-md-12">
+		<div class="box-inner">
+			<div class="box-header well" data-original-title="">
+				<h2><i class="glyphicon glyphicon-cog"></i> 微信历史菜单</h2>
+
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+					<a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="alert alert-info">
+					<form action="{:U('index')}" method="post" class="form-inline" role="form">
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">🔍</div>
+								<input class="form-control" type="search" placeholder="搜索内容" name='search' value="{:I('search')}">
+							</div>
+						</div>
+
+						<button type="submit" class="btn btn-default select-btn">搜索</button>
+					</form>
+				</div>
+				<form action="{:U('del')}" method="post" class="del-form" >
+				<table class="table table-striped table-bordered responsive">
+					<thead>
+						<tr>
+							<th class="centeralign"><input type="checkbox" class="checkall" /></th>
+							<th>编号</th>
+							<th>菜单名称</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name='list' id='vo'>
+						<tr>
+							<td class="centeralign"><input type="checkbox" name='check_box[]' value='{$vo.id}'/></td>
+							<td>{$vo.id}</td>
+							<td class="center">{$vo.title}</td>
+							<td class="centeralign">{$vo['state']|showStatus=$vo['id']}</td>
+							<td class="text-center">
+								<a class="btn btn-success btn-xs ajax-list" href="{:U('info','mid='.$vo['id'])}">
+									<i class="glyphicon glyphicon-zoom-in icon-white"></i> 详情
+								</a>
+								<a class="btn btn-info btn-xs modal_edit" href="{:U('edit','id='.$vo['id'])}" data-title="编辑信息">
+									<i class="glyphicon glyphicon-edit icon-white"></i> Edit
+								</a>
+							</td>
+						</tr>
+						</volist>
+							
+					</tbody>
+				</table>
+				</form>
+				<div class="center-block">
+					<ul class="pagination pagination-centered">
+						{$page}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/span-->
+
+</div>
+<!--/row-->
