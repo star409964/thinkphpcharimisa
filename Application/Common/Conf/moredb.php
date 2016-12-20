@@ -92,6 +92,13 @@ return array (
 				'db_pwd'   => 'royzhang012',
 				'db_host'  => 'rdsk4ok603k5mc0k629r.mysql.rds.aliyuncs.com',
 				'db_port'  => '3306',
-				'db_name'  => 'uat_weixin'),				
+				'db_name'  => 'uat_weixin'),	
+		'UAT_MERCHANT' => array(
+				'db_type'  => 'mysql',
+				'db_user'  => 'royzhang012',
+				'db_pwd'   => 'royzhang012',
+				'db_host'  => 'rdsk4ok603k5mc0k629r.mysql.rds.aliyuncs.com',
+				'db_port'  => '3306',
+				'db_name'  => 'uat_merchant'),							
 					
 );

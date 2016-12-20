@@ -223,6 +223,23 @@ class WxChatLogic extends WxChatBaseLogic {
     return $ticket;
   }
   
-	
+	/**
+	 * 函数说明：一键设置菜单
+	 * @deprecated 创建时间：2016-12-19
+	 * @deprecated 备注：errcode   为0成功
+	 * @author mike<stardandan@126.com>
+	 * @param string $code
+	 * @return array
+	 */
+	public function setMenu($button,$wxid){
+		$token = $this->getAccessToken($wxid);
+		$url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$token;
+		$res = json_decode(httpPost($url,$button),TRUE); 
+		if($res['errcode']!=0){//异常处理
+		 	jsonReturn('110',ReturnWxError($res).$res['errmsg']);
+		 }else{
+		 	jsonReturn(1,'菜单设置成功');
+		 }
+	}
 	
 }//class end

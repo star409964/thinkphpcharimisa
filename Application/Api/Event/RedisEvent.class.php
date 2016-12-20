@@ -39,8 +39,16 @@ class RedisEvent
 	 * 用户登录信息放入 redis里面
 	 */
 	 public function setUserInfo($info){
-		$this->redis->hMset(C('REDIS_USER_PREFIX').$info['user_base'], $info);
-		$this->redis->expire($info['user_base'],7200);
+		$this->redis->hMset(C('REDIS_USER_PREFIX').$info['access_ticket'], $info);
+		$this->redis->expire($info['access_ticket'],3600);
+	 }
+	 /*
+	 * 追加用户信息到 redis里面
+	 */
+	 public function appendUserInfo($key,$ary){
+		$list = $this->redis->HgetAll(C('REDIS_USER_PREFIX').$key);
+		$info = array_merge($list,$ary);
+		$this->setUserInfo($info);
 	 }
 	 /*
 	 * 获取放入redis里面的用户信息

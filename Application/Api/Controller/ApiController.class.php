@@ -68,12 +68,25 @@ class ApiController extends Controller {
 			$resurl = F($state);
 			 $map['openid'] = array('like',$token_openid['openid']);
 			 $mo = D("UserWx");
-			 $info = $mo->where($map)->find();
+			 $info = $mo->join('LEFT JOIN __USER_WX_SK__ ON __USER_WX__.user_base = __USER_WX_SK__.user_id')->where($map)->find();
+//			 dump($info);
 			 session('wxopenid',$token_openid['openid']);
+			 $ticket = session('wxopenid-ticket');
+			 if(!$ticket){
+				 $ticket = createNonceStr();
+				 session('wxopenid-ticket',$ticket);
+			 }
 			 if($info==FALSE){
 			 	$token_openid['user_base'] = 'wx'.$wxid.'-'.$token_openid['openid'];
 			 	$token_openid['userid'] = $mo->uuid();
 			 	$ret = $mo->add($token_openid);
+				//-----额外增加的字段
+				$token_openid['access_ticket'] = $ticket;
+				$token_openid['login_time'] = hmtime() ;
+				$token_openid['user_agent'] = I("server.HTTP_USER_AGENT");
+				$token_openid['ip'] = get_client_ip();
+				$token_openid['id'] = $token_openid['userid'];
+				$token_openid['username'] = $token_openid['openid'];
 				D("UserBase")->add(array('userid'=>$token_openid['user_base']));// 主表
 				if($ret!=FALSE){
 					$redis = A('Redis','Event');
@@ -81,23 +94,107 @@ class ApiController extends Controller {
 				}
 			 }else{
 			 		$redis = A('Redis','Event');
+					//------额外增加的字段
+					$info['access_ticket'] = $ticket;
+					$info['login_time'] = hmtime() ;
+					$info['user_agent'] = I("server.HTTP_USER_AGENT");
+					$info['ip'] = get_client_ip();
+					$info['id'] = $info['user_base'];
+					$info['username'] = $info['openid'];
+//					dump($info);
 					$redis->setUserInfo($info);
-					$token_openid['user_base'] = $info['user_base'];
+					$token_openid = $info;
 			 }
 			 //商客 和 普通用户 建立联系
 			 $skE = A("Sk",'Event');
 			 $art = convertUrlQuery($resurl);
 			 $skE->bingWxUserSk($token_openid['user_base'],$art['companycode'],$art['logincode']);
-			 
-			if(strpos($resurl,'?')!=FALSE){
-					$resurl = $resurl.'&uuid='.$token_openid['user_base'];
-				}else{
-					$resurl = $resurl.'?uuid='.$token_openid['user_base'];
-				}	
+			 cookie('juyou-ticket',$token_openid['access_ticket']);
 		}else{
 			$resurl = F($state).'&uuid=error&errcode='.$res['errcode'];
 		}
+		
+			//dump($token_openid);
+		
 			redirect($resurl); 
+	}
+
+
+	/*
+	 * 网页授权-给用户领取 积分用的
+	 */
+	public function authBasejf(){
+		$all = I('get.');
+		$wxid = I('wxid');
+		$rurl = '';
+		foreach ($all as $key => $value) {
+			if($key=='rurl'){
+				$rurl = $value;
+			}else{
+				$rurl = $rurl.'&'.$key.'='.$value;
+			}
+		}
+		$ts = time().rand(1000, 9999);
+		F($ts,$rurl);
+		$myurl = C('HD_BASE_URL').U('requestUrljf',array('wxid'=>$wxid)); 
+		$wechatObj = A('WxChat','Logic');
+		$res = $wechatObj->getcodeUrl($ts,$myurl,$wxid);
+		redirect($res);
+	}
+	/*
+	 * 积分授权  回调
+	 */
+	
+	public function requestUrljf(){
+		$code = I('code');
+		$wxid = I('wxid');
+		$state = I('state');
+		$resurl = '';
+		$wechatObj = A('WxChat','Logic');
+		$token_openid = $wechatObj->getWyInfo($code,$wxid);
+		$res = $wechatObj->WxError($token_openid);
+		if($res==FALSE){//授权成功
+			$resurl = F($state);
+			 $map['openid'] = array('like',$token_openid['openid']);
+			 $mo = D("UserWx");
+			 $info = $mo->where($map)->find();
+			 session('wxopenid',$token_openid['openid']);
+			 
+			 if($info==FALSE){
+			 	$token_openid['user_base'] = 'wx'.$wxid.'-'.$token_openid['openid'];
+			 	$token_openid['userid'] = $mo->uuid();
+			 	$ret = $mo->add($token_openid);
+				D("UserBase")->add(array('userid'=>$token_openid['user_base']));// 主表
+			 }else{
+			 	$token_openid['userid'] = $info['userid'];
+			 }
+			if(strpos($resurl,'?')!=FALSE){
+					$resurl = $resurl.'&uuid='.$token_openid['userid'];
+				}else{
+					$resurl = $resurl.'?uuid='.$token_openid['userid'];
+				}
+		}else{
+			$resurl = F($state).'&uuid=error&errcode='.$res['errcode'];
+		}
+		
+			redirect($resurl); 
+	}
+	
+	
+	/*
+	 * 积攒-积分
+	 */
+	 public function dcredits(){
+	 	$credit = A('Sk','Event');
+		$credit->credits();
+	 }
+	 
+	 /*
+	  * 积分列表 
+	  */ 
+	public function creditsList(){
+		$credit = A('Sk','Event');
+		$credit->creditsList();
 	}
 	
 	/*
@@ -115,6 +212,16 @@ class ApiController extends Controller {
 		$sk = A('Sk','Event');
 		$sk->skPay(); 
 	}
+
+	/*
+	 * 微信通用支付接口
+	 */
+	public function jsPay(){
+		$sk = A('Common','Event');
+		$sk->GzhPay(); 
+	}
+	
+	
 	/*
 	 * 商客支付成功-回调函数-处理订单确认
 	 */
@@ -127,12 +234,39 @@ class ApiController extends Controller {
 	}
 	
 	/*
+	 * 通用支付 回调函数
+	 */
+	public function CommonNotify(){
+		$wxid = I('post.wxid');
+		$notifyurl = U('Api/CommonNotify',array('wxid'=>$wxid),'',TRUE);
+		
+		$notify = A('WxNotify','Logic');
+		$notify->CommonNotify($wxid,$notifyurl);
+	}
+	
+	/*
 	 * 对外公众号消息通知接口
 	 */
 	public function sendNotice(){
 		$notice = A('WxNotice','Logic');
 		$info = array('1','2','3','4');
 		$notice->wxSendNotice(1,$info,'test','notice100');
+	}
+	
+	
+	/*
+	 * 我的信息 详情
+	 */
+	public function myInfo(){
+		$openid =  session('wxopenid');
+		if($openid){
+			$map['openid'] = $openid;
+			$info = D("UserWx")->where($map)->find();
+			if($info==FALSE)jsonReturn(110,'获取信息失败');
+			jsonReturn(1,'获取信息成功',$info);
+		}else{
+			jsonReturn(110,'你没有登录');
+		}
 	}
 	
 	public function tt(){
@@ -163,8 +297,31 @@ class ApiController extends Controller {
 				//商客和 用户绑定 测试
 //				 $skE = A("Sk",'Event');
 //			     $skE->bingWxUserSk('222222');
-                $url = "http://www.baidu.com?abc=123&user=mike&mobile=15040249808";
-				dump(convertUrlQuery($url));
+//              $url = "http://www.baidu.com?abc=123&user=mike&mobile=15040249808";
+//				dump(convertUrlQuery($url));
+//				echo '222224442249999</br>';
+//				echo I("server.HTTP_USER_AGENT");
+//				dump(I('server.'));
+
+//				$map['openid'] = array('like','oaugowRfzIQDRqk0T4GCi3F1LxzE');
+//				 $mo = D("UserWx");
+//				 $info = $mo->join('LEFT JOIN __USER_WX_SK__ ON __USER_WX__.user_base = __USER_WX_SK__.user_id')->where($map)->find();
+//				echo '22';
+//				trace($info);	
+
+			$sk = array("amount"=>"1.50",
+							"channel"=>"wx",
+							"order_no"=>"S101482215039803",
+							"buyer_id"=>"oaugowRfzIQDRqk0T4GCi3F1LxzE",
+							"trade_state"=>"success",
+							"transaction_id"=>"4006962001201612203383238040",
+							"time_end"=>"2016-12-20 14:24:10",
+							"notify_time"=>"2016-12-20 14:25:10",
+							"notify_type"=>"trade",
+							"extra_param"=>"1");
+			dump($sk);
+			$ret = D("SysWxchatCallbackLog")->add($sk);
+			dump($ret);
 		
 	}
 }

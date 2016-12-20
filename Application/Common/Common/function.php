@@ -98,7 +98,14 @@ function SetE($e) {
 		E('没有获取到数据');
 	}
 }
-
+//公共函数
+function toDate($time, $format = 'Y-m-d H:i:s') {
+	if (empty ( $time )) {
+		return '';
+	}
+	$format = str_replace ( '#', ':', $format );
+	return date ($format, $time );
+}
 /*
  * 返回【精确到毫秒的时间戳】
  */

@@ -19,6 +19,27 @@ use Payment\Common\PayException;
 use Api\Logic\WxChatBaseLogic;
 class WxNotifyLogic extends WxChatBaseLogic {
 	
+	
+	
+	/*
+	 * 微信 公共 回调
+	 */ 
+	 public function CommonNotify($wxid,$notifyurl){
+			$wxconfig = $this->getConfig($wxid,$notifyurl);
+			$notify = new NotifyContext();
+			$callback = A('CommonNotify','Event');
+			try {
+			// 微信回调
+			$notify->initNotify(Config::WEIXIN, $wxconfig);
+			$ret = $notify->notify($callback);
+			} catch (PayException $e) {
+			SetLog('公共回调函数CommonNotify报错****错误信息'.$e->errorMessage(), 'notify.log');
+			echo $e->errorMessage();exit;
+			}
+			return TRUE;exit;
+		}
+	
+	
 	/*
 	 * 微信支付回调
 	 */ 

@@ -1,3 +1,52 @@
+
+<style type="text/css">
+	.nav-menu .btns{
+		text-align: right;
+		position: absolute;
+		top: -10px;
+	}
+	.nav-menu .cbtns{
+		text-align: right;
+		position: absolute;
+	}
+	.btns-float-right{
+		float: right;
+	}
+	.btns-left{
+		right: 70px;
+	}
+	.btns-right{
+		right: 20px;
+	}
+	
+	.btns-up{
+		right: -3px;
+		margin-top: -47px;
+	}
+	.btns-down{
+		/*right: -18px;*/
+		margin-top: -32px;
+	}
+	
+	
+	.nav-menu .btns a {
+	    display: inline-block;
+	    width: 20px;
+	    height: 20px;
+	    text-align: center;
+	    line-height: 20px;
+	    color: #efefef;
+	    background: rgba(0,0,0,.3);
+	    border-radius: 50%;
+}
+.nav-menu .btns a:hover{
+	    background: #FFF9D7;
+}
+.glyphicon-arrow-up:hover{
+	color: red;
+}
+</style>
+
 <div class="conditionMenu ng-scope" id="conditionMenuDesigner">
 	<input type="hidden" id="menusid" value="{$Think.request.mid}" />
 	<div class="app clearfix">
@@ -11,19 +60,34 @@
 					</div>
 				</div>
 				<div class="nav-menu">
-					<div class="js-quickmenu nav-menu-wx clearfix has-nav-3" ng-class="{0 : 'has-nav-0', 1 : 'has-nav-1', 2: 'has-nav-2', 3: 'has-nav-3', 4 : 'has-nav-3'}[context.group.button.length + 1]">
-						<ul class="nav-group designer-x ui-sortable">
+					<div class="js-quickmenu nav-menu-wx clearfix has-nav-3">
+						<ul class="nav-group designer-x ui-sortable menu_ul">
 						<neq name='list' value=''>
 						<volist name='list' id='vo'>
-							<li class="nav-group-item js-sortable ng-scope">
-								<a class="ng-binding click-item" href="javascript:void(0);" title="拖动排序" data-id="{$vo.id}">
+							<li class="nav-group-item js-sortable ng-scope" data-sortid="{$vo.id}">
+								<div class="btns btns-right">
+									<a href="javascript:;"><i class="glyphicon glyphicon-chevron-right"></i></a>
+								</div>
+								
+								<div class="btns btns-left">
+									<a href="javascript:;"><i class="glyphicon glyphicon-chevron-left"></i></a>
+								</div>
+								
+								<a class="ng-binding click-item jiantou" href="javascript:void(0);" title="拖动排序" data-id="{$vo.id}">
 									<i class="glyphicon glyphicon-minus"></i> {$vo.name}
 								</a>
 									<neq name='vo.children' value=''>
 										<dl class="designer-y ui-sortable">
 											<volist name='vo.children' id='ch'>
-												<dd class="ng-scope">
+												<dd class="ng-scope dd-childern" data-sortid="{$ch.id}">
 													<a class="ng-binding click-item" href="javascript:void(0)" data-id="{$ch.id}">{$ch.name}</a>
+													<div class="cbtns btns-up">
+														<a href="javascript:;"><i class="glyphicon glyphicon-arrow-up"></i></a>
+													</div>
+													
+													<div class="cbtns btns-down">
+														<a href="javascript:;"><i class="glyphicon glyphicon-arrow-down"></i></a>
+													</div>
 												</dd>
 											</volist>
 									</neq>
@@ -59,8 +123,8 @@
 						<div class="panel-body form-horizontal">
 							
 							<div class="card ng-scope" ng-if="context.group.button.length > 0">
-								<div class="btns">
-									<a href="javascript:;"><i class="fa fa-times"></i></a>
+								<div class="btns btns-float-right">
+									<a href="javascript:;"><i class="glyphicon glyphicon-remove-circle"></i></a>
 								</div>
 								<div class="nav-region">
 									<div class="first-nav">
@@ -159,7 +223,7 @@
 	<!--底部上架-->
 	<div class="shop-preview col-xs-12 col-sm-9 col-lg-10">
 		<div class="text-center alert alert-warning" style="background:#faebcc">
-			<span class="btn btn-primary ng-binding" id="btn-submit" ng-click="context.group.button.length > 0 ? context.submit() : context.remove()">上架</span>
+			<span class="btn btn-primary ng-binding" id="btn-submit">上架</span>
 		</div>
 	</div>
 </div>
@@ -197,7 +261,7 @@ function childMenu(e){
  * 默认菜单样式
  */
 function topMenuItem(item){
-	var html = '<li class="nav-group-item js-sortable ng-scope active">'+
+	var html = '<li class="nav-group-item js-sortable ng-scope active" data-sortid="'+item.id+'">'+
 								'<a class="ng-binding click-item" href="javascript:void(0);" data-id="'+item.id+'">'+
 									'<i class="glyphicon glyphicon-minus"></i>'+item.name+
 								'</a>'+
@@ -213,8 +277,14 @@ function topMenuItem(item){
  * 默认二级菜单样式
  */
 function childMenuItem(item){
-	var html = '<dd class="ng-scope active">'+
+	var html = '<dd class="ng-scope active" data-sortid="'+item.id+'">'+
 				'<a class="ng-binding click-item" href="javascript:void(0)" data-id="'+item.id+'">'+item.name+'</a>'+
+				'<div class="cbtns btns-up">'+
+				'<a href="javascript:;"><i class="glyphicon glyphicon-arrow-up"></i></a>'+
+				'</div>'+
+				'<div class="cbtns btns-down">'+
+					'<a href="javascript:;"><i class="glyphicon glyphicon-arrow-down"></i></a>'+
+				'</div>'+
 				'</dd>';
 		return html;		
 }
@@ -226,7 +296,7 @@ function addTopMenuAjax(id,that,num){
 		type:"post",
 		url:"{:U('Menus/ajaxAdd')}",
 		data:{
-			id:id,
+			pid:id,
 			menusid:$('#menusid').val()
 				},
 		dataType:'json',
@@ -263,7 +333,7 @@ function addChildMenuAjax(id,that,num){
 		type:"post",
 		url:"{:U('Menus/ajaxAdd')}",
 		data:{
-			id:id,
+			pid:id,
 			menusid:$('#menusid').val(),
 				},
 		dataType:'json',
@@ -357,4 +427,151 @@ function ajaxUpdate(turl,media_id){
 		}
 	});
 }
+
+/*
+ * 点击箭头-挪动li 位置
+ */
+
+$(document).off('click','.glyphicon-chevron-right').on('click','.glyphicon-chevron-right',function(){
+	var total_li = $('.menu_ul').find('li').length;
+	var $that = $(this).parents('li');
+	var $next = $that.next('li');
+	var num = $that.index()+1;//li 节点的顺序位置
+	if(parseInt(num) < parseInt(total_li)){
+		var id1 = $that.data('sortid');
+		var id2 = $next.data('sortid');
+		var sort1 = num+1;
+		var sort2 = num;
+		ajaxSort(id1,sort1,id2,sort2,$that,$next,1);
+	} //可以右侧移动
+});
+
+$(document).off('click','.glyphicon-chevron-left').on('click','.glyphicon-chevron-left',function(){
+	var total_li = $('.menu_ul').find('li').length;
+	var $that = $(this).parents('li');
+	var $next = $that.prev('li');
+	var num = $that.index()+1;//li 节点的顺序位置
+	if(parseInt(num)>1){
+		var id1 = $that.data('sortid');
+		var id2 = $next.data('sortid');
+		var sort1 = num-1;
+		var sort2 = num;
+		ajaxSort(id1,sort1,id2,sort2,$that,$next,2);
+	} //可以右侧移动
+});
+
+$(document).off('click','.glyphicon-arrow-up').on('click','.glyphicon-arrow-up',function(){
+	var total_dd = $(this).parents('dl').find('.dd-childern').length;
+	var $that = $(this).parents('dd'); //dd 节点
+	var $next = $that.prev('dd');
+	var num = $that.index()+1;//li 节点的顺序位置
+	console.log('总计路数',total_dd);
+	console.log('当前数',num);
+	if(parseInt(num)>1){
+		var id1 = $that.data('sortid');
+		var id2 = $next.data('sortid');
+		var sort1 = num-1;
+		var sort2 = num;
+		//$that.insertBefore($next);
+		ajaxSort(id1,sort1,id2,sort2,$that,$next,2);
+	} //可以右侧移动
+});
+
+$(document).off('click','.glyphicon-arrow-down').on('click','.glyphicon-arrow-down',function(){
+	var total_dd = $(this).parents('dl').find('.dd-childern').length;
+	var $that = $(this).parents('dd'); //dd 节点
+	var $next = $that.next('dd');
+	var num = $that.index()+1;//li 节点的顺序位置
+	console.log('总计路数',total_dd);
+	console.log('当前数',num);
+	if(parseInt(num)<total_dd){
+		var id1 = $that.data('sortid');
+		var id2 = $next.data('sortid');
+		var sort1 = num+1;
+		var sort2 = num;
+		//$that.insertBefore($next);
+		ajaxSort(id1,sort1,id2,sort2,$that,$next,1);
+	} //可以右侧移动
+});
+
+function ajaxSort(id1,sort1,id2,sort2,$that,$next,weizhi){
+	$.ajax({
+		type:"post",
+		url:"{:U('ajaxSort')}",
+		data:{id1:id1,id2:id2,sort1:sort1,sort2:sort2},
+		dataType:'json',
+		success:function(retData){
+			if(retData.status==1){ //1 是把当前的元素移动到 它后面的元素
+				if(weizhi==1){
+					$that.insertAfter($next);
+				}else{
+					$that.insertBefore($next);
+				}
+			}
+		}
+	});
+}
+
+$("#btn-submit").off().on('click',function(){
+	var menuid = $('#menusid').val();
+	$.ajax({
+		type:"post",
+		url:"{:U('setWxMenu')}",
+		data:{menuid:menuid},
+		dataType:'json',
+		success:function(retData){
+			if(retData.status==1){
+				noty({
+						text: retData.msg,
+						layout: "top",
+						timeout: 1000
+					});
+			}else{
+				noty({
+						text: retData.result,
+						layout: "top",
+						type: "error",
+						timeout: 1000
+					});
+			}
+		}
+	});
+})
+
+$(".btns-float-right").off().on('click',function(){
+	var id = $('input[name="id"]').val();
+	if(id == ''||id==undefined){
+		noty({
+				text: '请选择要删除的菜单',
+				layout: "top",
+				type: "error",
+				timeout: 1000
+			});
+	}else{
+		$.ajax({
+			type:"post",
+			url:"{:U('deleteMenu')}",
+			data:{id:id},
+			dataType:'json',
+			success:function(retData){
+				if(retData.status==1){
+					noty({
+							text: retData.msg,
+							layout: "top",
+							timeout: 1000
+						});
+						$('[data-sortid="'+id+'"]').remove();
+				}else{
+					noty({
+							text: retData.msg,
+							layout: "top",
+							type: "error",
+							timeout: 1000
+						});
+				}
+			}
+		});
+	}
+})
+
 </script>

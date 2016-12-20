@@ -65,7 +65,7 @@ class SkEvent
 	 * 绑定用户和商客信息
 	 */
 	public function bingWxUserSk($uuid,$code,$login_name){
-		if($code && $login_name){
+		if($code!=null && $login_name!=null && $uuid!=null){
 			$map['user_id'] = array('like',$uuid);
 			$ret = D('UserWxSk')->where($map)->find();
 			if($ret==FALSE){ 
@@ -73,16 +73,75 @@ class SkEvent
 				$mps['code'] = $code;
 				$rest = D('SysUser')->join('JOIN __SYS_OFFICE__ ON __SYS_USER__.office_id = __SYS_OFFICE__.id')->where($mps)->field('code')->find();
 				if($rest!=false){//合法-存入对应表
-					$mps['user_id'] = $uuid;
-					$rs = D('UserWxSk')->add($mps);
+					$data['company_user_name'] = $login_name;
+					$data['company_code'] = $code;
+					$data['user_id'] = $uuid;
+					$mo = D('UserWxSk');
+					$find = $mo->where($data)->find();
+					if($find==FALSE){//没存在
+						$rs = $mo->add($data);
+						$session_key = session('wxopenid-ticket');
+						if($session_key){// 把用户的对应关系 存入到redis里面
+							$redis = A('Redis','Event');
+							$ary = $redis->getUserInfo($session_key);
+							$info = $redis->appendUserInfo($session_key,$ary);
+						}
+					}
 					trace('插入数据库',$rs);
 				}
 			}
 		}
 		
 	}
+	/*
+	 * 积分助力接口
+	 */
+	public function credits(){
+		$adId = I('adid');
+		$uuId = I('uuid');
+		$topId = I('topid');
+		if(!empty($adId ) && !empty($uuId) &&!empty($topId)){
+			$map['ad_id'] = array('like',$adId);
+			$adInfo = D("GenViewAd")->where($map)->getField('integral_num');
+			trace($adInfo);
+			if($adInfo!=FALSE){//存在这个广告
+				$data['myuuid'] = $topId;
+				$data['otheruuid'] = $uuId;
+				$data['adid'] = $adId;
+				$history = D("MerCreditsHelp")->where($data)->getField('id');
+				if($history!=FALSE) jsonReturn(110,'您已经领取过积分了');
+				$data['atime'] = toDate(time());
+				$data['integral'] = $adInfo;
+				$ret = D("MerCreditsHelp")->add($data);
+				if($ret!=FALSE){
+					D("GenViewAd")->where($map)->setInc('zan_num',1);;
+					jsonReturn(1,'成功');
+				}else{
+					jsonReturn(110,'添加积分失败');
+				}
+			}else{
+				jsonReturn(110,'没有这个广告');
+			}
+		}else{
+			jsonReturn(110,'缺少参数');
+		}
+	}
 	
-	
+	/*
+	 * 谁给我 助力积分 列表
+	 */
+	 
+	 public function creditsList(){
+	 	$uuid = I('uuid');
+		if(empty($uuid)) jsonReturn(110,'缺少参数');
+		$map['myuuid'] = $uuid;
+		$list = D("MerCreditsHelp")->join('LEFT JOIN __USER_WX__ ON __MER_CREDITS_HELP__.otheruuid = __USER_WX__.userid')->where($map)->field('integral,nickname,headimgurl')->select();
+		if($list!=FALSE){
+			jsonReturn(1,'返回数据成功',$list);
+		}else{
+			jsonReturn(1,'没有数据',0);
+		}
+	 }
 	
 	public function tt(){
 		echo U('Api/skNotify',array('wxid'=>1),'',TRUE);
