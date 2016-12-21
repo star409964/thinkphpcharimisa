@@ -79,7 +79,7 @@ class MenusController extends CommonController {
 		C('TOKEN_ON',false);
 		$model = D ('MenuInfo');
 		if (false === $model->create ()) {
-			$this->error ( $model->getError () );
+			jsonReturn(110,$model->getError ());
 		}
 		$list=$model->save ();
 		if (false !== $list) {

@@ -34,7 +34,7 @@ class WxChatBaseLogic {
 			SetE($res);
 			$access_token = $res['access_token'];
 			if ($access_token) {
-				S('access_token_' . $id, $access_token, 7200);
+				S('access_token_' . $id, $access_token, 7000);
 			}
 		} else {
 			$access_token = S('access_token_' . $id);

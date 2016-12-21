@@ -4,10 +4,9 @@ use Admin\Model\CommonModelModel;
 class MenuInfoModel extends CommonModel {
 	protected $tablePrefix = 'lyx_';
 	protected $_validate = array(     
-			 array('name','require','标题不能为空！'),  // 都有时间都验证    
+			 array('name','require','菜单名称不能空！'),  // 都有时间都验证    
 			 array('sort','number','排序只能为数字！'),  // 只在登录时候验证     
 			 );
-	//自动填充    2014-7-30
 	
 	
 	protected $_auto=array(

@@ -1,5 +1,31 @@
 # ChangeLog - Aliyun OSS SDK for PHP
 
+## v2.2.1 / 2016-12-01
+
+* 禁止http curl自动填充Accept-Encoding
+
+## v2.2.0 / 2016-11-22
+
+* 修复PutObject/CompleteMultipartUpload的返回值问题(#26)
+
+## v2.1.0 / 2016-11-12
+
+* 增加[RTMP](https://help.aliyun.com/document_detail/44297.html)接口
+* 增加支持[图片服务](https://help.aliyun.com/document_detail/44686.html)
+
+## v2.0.7 / 2016-06-17
+
+* Support append object
+
+## v2.0.6
+
+* Trim access key id/secret and endpoint
+* Refine tests and setup travis CI
+
+## v2.0.5
+
+* 增加Add/Delete/Get BucketCname接口
+
 ## v2.0.4
 
 * 增加Put/Get Object Acl接口
@@ -20,7 +46,7 @@
 
 ## 2015.11.25
 
-** 大版本升级，不再兼容以前接口，新版本对易用性做了很大的改进，建议用户迁移到新版本。 **
+* **大版本升级，不再兼容以前接口，新版本对易用性做了很大的改进，建议用户迁移到新版本。**
 
 ## 修改内容
 

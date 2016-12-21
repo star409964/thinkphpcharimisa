@@ -696,8 +696,16 @@ class RequestCore
                 break;
 
             case self::HTTP_POST:
-                curl_setopt($curl_handle, CURLOPT_POST, true);
-                curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $this->request_body);
+                curl_setopt($curl_handle, CURLOPT_CUSTOMREQUEST, 'POST');
+                if (isset($this->read_stream)) {
+                    if (!isset($this->read_stream_size) || $this->read_stream_size < 0) {
+                        throw new RequestCore_Exception('The stream size for the streaming upload cannot be determined.');
+                    }
+                    curl_setopt($curl_handle, CURLOPT_INFILESIZE, $this->read_stream_size);
+                    curl_setopt($curl_handle, CURLOPT_UPLOAD, true);
+                } else {
+                    curl_setopt($curl_handle, CURLOPT_POSTFIELDS, $this->request_body);
+                }
                 break;
 
             case self::HTTP_HEAD:
@@ -767,8 +775,8 @@ class RequestCore
 
             // Reset the headers to the appropriate property.
             $this->response_headers = $header_assoc;
-            $this->response_headers['_info'] = $this->response_info;
-            $this->response_headers['_info']['method'] = $this->method;
+            $this->response_headers['info'] = $this->response_info;
+            $this->response_headers['info']['method'] = $this->method;
 
             if ($curl_handle && $response) {
                 //return new $this->response_class($this->response_headers, $this->response_body, $this->response_code, $this->curl_handle);

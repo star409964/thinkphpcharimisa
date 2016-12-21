@@ -1,7 +1,7 @@
 <?php
 
 function classLoader($class)
-{ echo 'ssss';
+{
     $path = str_replace('\\', DIRECTORY_SEPARATOR, $class);
     $file = __DIR__ . DIRECTORY_SEPARATOR .'src'. DIRECTORY_SEPARATOR . $path . '.php';
     if (file_exists($file)) {
@@ -9,4 +9,3 @@ function classLoader($class)
     }
 }
 spl_autoload_register('classLoader');
-

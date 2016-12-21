@@ -3,7 +3,6 @@
 namespace OSS\Tests;
 
 use OSS\Core\OssException;
-use OSS\Core\OssUtil;
 use OSS\OssClient;
 
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'TestOssClientBase.php';
@@ -41,18 +40,10 @@ class OssClientBucketTest extends TestOssClientBase
         $this->assertTrue(is_array($bucketList));
         $this->assertGreaterThan(0, count($bucketList));
         $this->ossClient->putBucketAcl($this->bucket, OssClient::OSS_ACL_TYPE_PUBLIC_READ_WRITE);
+        Common::waitMetaSync();
         $this->assertEquals($this->ossClient->getBucketAcl($this->bucket), OssClient::OSS_ACL_TYPE_PUBLIC_READ_WRITE);
 
         $this->assertTrue($this->ossClient->doesBucketExist($this->bucket));
         $this->assertFalse($this->ossClient->doesBucketExist($this->bucket . '-notexist'));
-
-        try {
-            $this->ossClient->deleteBucket($this->bucket);
-        } catch (OssException $e) {
-            $this->assertEquals("BucketNotEmpty", $e->getErrorCode());
-            $this->assertEquals("409", $e->getHTTPStatus());
-        }
-
-
     }
 }

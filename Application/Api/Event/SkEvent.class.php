@@ -142,6 +142,48 @@ class SkEvent
 			jsonReturn(1,'没有数据',0);
 		}
 	 }
+	 
+	 /*
+	 * 我的信息 详情
+	 */
+	public function myInfo(){
+		$openid =  session('wxopenid');
+		if($openid){
+			$map['openid'] = $openid;
+			$info = D("UserWx")->join('__USER_BASE__ ON __USER_WX__.user_base = __USER_BASE__.userid')->where($map)->field('user_wx.nickname,headimgurl,mobile,papersno,user_wx.city,country,province,user_wx.sex,user_base as userid,birthday')->find();
+			if($info==FALSE)jsonReturn(110,'获取信息失败');
+			jsonReturn(1,'获取信息成功',$info);
+		}else{
+			jsonReturn(110,'你没有登录');
+		}
+	}
+	
+	 /*
+	 * 设置我的信息
+	 */
+	public function setMyInfo(){
+		$ticket =  session('wxopenid-ticket');
+		if($ticket){
+			$redis = A("Redis",'Event');
+			$info = $redis->getUserInfo($ticket);
+			$openid = $info['openid'];
+			$userid = $info['user_base'];
+			$data = I('post.');
+			if(array_key_exists("birthday", $data) || array_key_exists("mobile", $data) || array_key_exists("papersno", $data)){
+				D("UserBase")->where("userid='$userid'")->save($data);
+			}	
+			$ret = D("UserWx")->where("openid='$openid'")->save($data);
+			if($ret!=FALSE){
+				jsonReturn(1,'信息设置成功');
+			} else{
+				jsonReturn(110,'信息设置失败');
+			}
+		}else{
+			jsonReturn(110,'你没有登录');
+		}
+	}
+	
+	
 	
 	public function tt(){
 		echo U('Api/skNotify',array('wxid'=>1),'',TRUE);

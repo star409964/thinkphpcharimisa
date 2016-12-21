@@ -258,16 +258,34 @@ class ApiController extends Controller {
 	 * 我的信息 详情
 	 */
 	public function myInfo(){
-		$openid =  session('wxopenid');
-		if($openid){
-			$map['openid'] = $openid;
-			$info = D("UserWx")->where($map)->find();
-			if($info==FALSE)jsonReturn(110,'获取信息失败');
-			jsonReturn(1,'获取信息成功',$info);
+		$sk = A("Sk",'Event');
+		$sk->myInfo();
+	}
+	
+	/*
+	 * 设置我的信息
+	 */
+	public function setMyInfo(){
+		$sk = A("Sk",'Event');
+		$sk->setMyInfo();
+	}
+	
+	
+	/*
+	 * 微信 获取临时素材---然后上传到oss上
+	 */
+	
+	public function getMediaToOss(){
+		$media_id = I('media_id');
+		$wxid = I('wxid');
+		if(!empty($wxid) && !empty($media_id)){
+			$su = A('WxChat','Logic');
+			$su->getMedias($media_id,$wxid);
 		}else{
-			jsonReturn(110,'你没有登录');
+			jsonReturn(110,'缺少参数');
 		}
 	}
+	
 	
 	public function tt(){
 		//echo U('justBaseAouthMore',array('id'=>I('wxid')),'',TRUE);

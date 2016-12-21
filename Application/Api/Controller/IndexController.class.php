@@ -16,8 +16,18 @@ class IndexController extends Controller {
 	
 	public function index(){
 		$wx = A("WxChat",'Logic');
-		$wx->getAccessToken(3);
-		echo 's';
+		$wx->getMedias('u-mqscBavkIw5cTnYj0uQoEvfVf1hyRDxwrPhVjt6ZOshxs4FgfBLsMcgFdNtS9T',1);
+//		$oss = A("AliOss",'Logic');
+//		
+//		if(is_file('index.php')){
+//			 echo '12';  
+//			$oss->uploadFile('521.png', 'http://cms1010.oss-cn-beijing.aliyuncs.com/cms1010/521.png');
+//		}else{
+//			echo 'no file1';
+//		}
+
+
+
 	}
 	
 	public function upload() {

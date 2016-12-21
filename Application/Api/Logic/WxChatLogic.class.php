@@ -242,4 +242,22 @@ class WxChatLogic extends WxChatBaseLogic {
 		 }
 	}
 	
+	/**
+	 * 函数说明：获取临时素材---传递到oss上
+	 * @deprecated 创建时间：2016-12-19
+	 * @deprecated 备注：errcode   为0成功
+	 * @author mike<stardandan@126.com>
+	 * @param string $code
+	 * @return array
+	 */
+	public function getMedias($media_id,$wxid){
+		$token = $this->getAccessToken($wxid);
+		$url = 'https://api.weixin.qq.com/cgi-bin/media/get?access_token='.$token.'&media_id='.$media_id;
+		$res = httpGet($url); 
+		$oss = A('AliOss','Logic');
+	    $oss->putObject('wx/'.$media_id.'.jpg',$res);
+		jsonReturn(1,'文件传递成功','http://shangke2.oss-cn-qingdao.aliyuncs.com/wx/'.$media_id.'.jpg');
+		
+	}
+	
 }//class end

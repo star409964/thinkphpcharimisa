@@ -5,7 +5,7 @@ return array (
 //'REDIS_AUTH'=>'2015Juyou',
   
   //redis测试
-  'REDIS_URL'=>'114.215.148.122',
+  'REDIS_URL'=>'114.215.24.241',
   'REDIS_AUTH'=>'2015@Juyou',
   
   'REDIS_USER_PREFIX'=>'juyou_ticket_',	

@@ -404,7 +404,12 @@ $(document).off('click','.click-item').on('click','.click-item',function(e){
 						}
 					})
 				}else{
-					alert(retData.msg);
+					noty({
+						text: retData.msg,
+						layout: "top",
+						type: "error",
+						timeout: 1000
+					});
 				}
 			}
 		});
@@ -421,7 +426,12 @@ function ajaxUpdate(turl,media_id){
 				var id = $('input[name="id"]').val();
 				$('[data-id="'+id+'"]').html($('input[name="name"]').val());
 			}else{
-				
+				noty({
+						text: retData.msg,
+						layout: "top",
+						type: "error",
+						timeout: 1000
+					});
 			}
 			console.log(retData);
 		}

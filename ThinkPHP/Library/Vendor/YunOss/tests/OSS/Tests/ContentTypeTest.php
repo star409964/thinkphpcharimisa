@@ -4,9 +4,6 @@ namespace OSS\Tests;
 
 require_once __DIR__ . '/Common.php';
 
-use OSS\OssClient;
-use OSS\Core\OssException;
-
 class ContentTypeTest extends \PHPUnit_Framework_TestCase
 {
     private function runCmd($cmd)
@@ -16,6 +13,13 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         exec($cmd . ' 2>/dev/null', $output, $status);
 
         $this->assertEquals(0, $status);
+    }
+
+    private function getContentType($bucket, $object)
+    {
+        $client = Common::getOssClient();
+        $headers = $client->getObjectMeta($bucket, $object);
+        return $headers['content-type'];
     }
 
     public function testByFileName()
@@ -28,16 +32,16 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $this->runCmd('touch ' . $file);
 
         $client->uploadFile($bucket, $object, $file);
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('text/html', $type);
 
         $file = '/tmp/x.json';
         $object = 'test/y';
-        $this->runCmd('dd if=/dev/random of=' . $file . ' bs=1024 count=100');
+        $this->runCmd('dd if=/dev/urandom of=' . $file . ' bs=1024 count=100');
 
         $client->multiuploadFile($bucket, $object, $file, array('partSize' => 100));
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('application/json', $type);
     }
@@ -49,7 +53,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
 
         $object = "test/x.txt";
         $client->putObject($bucket, $object, "hello world");
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('text/plain', $type);
 
@@ -58,7 +62,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $this->runCmd('touch ' . $file);
 
         $client->uploadFile($bucket, $object, $file);
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('text/html', $type);
 
@@ -67,25 +71,25 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $this->runCmd('touch ' . $file);
 
         $client->uploadFile($bucket, $object, $file);
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('text/plain', $type);
 
         $file = '/tmp/x.mp3';
         $object = 'test/y.json';
-        $this->runCmd('dd if=/dev/random of=' . $file . ' bs=1024 count=100');
+        $this->runCmd('dd if=/dev/urandom of=' . $file . ' bs=1024 count=100');
 
         $client->multiuploadFile($bucket, $object, $file, array('partSize' => 100));
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('audio/mpeg', $type);
 
         $file = '/tmp/x.none';
         $object = 'test/y.json';
-        $this->runCmd('dd if=/dev/random of=' . $file . ' bs=1024 count=100');
+        $this->runCmd('dd if=/dev/urandom of=' . $file . ' bs=1024 count=100');
 
         $client->multiuploadFile($bucket, $object, $file, array('partSize' => 100));
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('application/json', $type);
     }
@@ -99,7 +103,7 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $client->putObject($bucket, $object, "hello world", array(
             'Content-Type' => 'text/html'
         ));
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('text/html', $type);
 
@@ -110,19 +114,19 @@ class ContentTypeTest extends \PHPUnit_Framework_TestCase
         $client->uploadFile($bucket, $object, $file, array(
             'Content-Type' => 'application/json'
         ));
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('application/json', $type);
 
         $file = '/tmp/x.json';
         $object = 'test/y';
-        $this->runCmd('dd if=/dev/random of=' . $file . ' bs=1024 count=100');
+        $this->runCmd('dd if=/dev/urandom of=' . $file . ' bs=1024 count=100');
 
         $client->multiuploadFile($bucket, $object, $file, array(
             'partSize' => 100,
             'Content-Type' => 'audio/mpeg'
         ));
-        $type = $client->getObjectMeta($bucket, $object)['content-type'];
+        $type = $this->getContentType($bucket, $object);
 
         $this->assertEquals('audio/mpeg', $type);
     }
