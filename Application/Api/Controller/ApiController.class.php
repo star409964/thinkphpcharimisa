@@ -159,14 +159,40 @@ class ApiController extends Controller {
 			 $mo = D("UserWx");
 			 $info = $mo->where($map)->find();
 			 session('wxopenid',$token_openid['openid']);
-			 
+			 $ticket = session('wxopenid-ticket');
+			 if(!$ticket){
+				 $ticket = createNonceStr();
+				 session('wxopenid-ticket',$ticket);
+			 }
 			 if($info==FALSE){
 			 	$token_openid['user_base'] = 'wx'.$wxid.'-'.$token_openid['openid'];
 			 	$token_openid['userid'] = $mo->uuid();
 			 	$ret = $mo->add($token_openid);
+				//-----额外增加的字段
+				$token_openid['access_ticket'] = $ticket;
+				$token_openid['login_time'] = hmtime() ;
+				$token_openid['user_agent'] = I("server.HTTP_USER_AGENT");
+				$token_openid['ip'] = get_client_ip();
+				$token_openid['id'] = $token_openid['userid'];
+				$token_openid['username'] = $token_openid['openid'];
+				if($ret!=FALSE){
+					$redis = A('Redis','Event');
+					$redis->setUserInfo($token_openid);
+				}
 				D("UserBase")->add(array('userid'=>$token_openid['user_base']));// 主表
 			 }else{
-			 	$token_openid['userid'] = $info['userid'];
+			 		$redis = A('Redis','Event');
+					//------额外增加的字段
+					$info['access_ticket'] = $ticket;
+					$info['login_time'] = hmtime() ;
+					$info['user_agent'] = I("server.HTTP_USER_AGENT");
+					$info['ip'] = get_client_ip();
+					$info['id'] = $info['user_base'];
+					$info['username'] = $info['openid'];
+//					dump($info);
+					$redis->setUserInfo($info);
+					$token_openid = $info;
+			 		$token_openid['userid'] = $info['userid'];
 			 }
 			if(strpos($resurl,'?')!=FALSE){
 					$resurl = $resurl.'&uuid='.$token_openid['userid'];

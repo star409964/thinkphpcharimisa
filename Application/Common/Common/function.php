@@ -50,7 +50,7 @@ function httpGet($url) {
  * curl的post请求
  * @return string
  */
-function httpPost($url, $param) {
+function httpPost($url, $param,$headers=false) {
 	$httph = curl_init($url);
 	curl_setopt($httph, CURLOPT_SSL_VERIFYPEER, TRUE);
 	curl_setopt($httph, CURLOPT_SSL_VERIFYHOST, 2);
@@ -60,7 +60,12 @@ function httpPost($url, $param) {
 	//设置为POST方式
 	curl_setopt($httph, CURLOPT_POSTFIELDS, $param);
 	curl_setopt($httph, CURLOPT_RETURNTRANSFER, TRUE);
-	curl_setopt($httph, CURLOPT_HEADER, FALSE);
+	if($headers==FALSE){
+		curl_setopt($httph, CURLOPT_HEADER, FALSE);
+	}else{
+		curl_setopt($httph, CURLOPT_HEADER, false);
+		curl_setopt($httph, CURLOPT_HTTPHEADER, $headers);
+	}
 	$rst = curl_exec($httph);
 	curl_close($httph);
 	return $rst;

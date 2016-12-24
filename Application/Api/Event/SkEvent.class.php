@@ -97,13 +97,19 @@ class SkEvent
 	 * 积分助力接口
 	 */
 	public function credits(){
-		$adId = I('adid');
-		$uuId = I('uuid');
-		$topId = I('topid');
-		if(!empty($adId ) && !empty($uuId) &&!empty($topId)){
+		$adId = I('post.adid',0);
+		$uuId = I('post.uuid',0);
+		$topId = I('post.topid');
+		
+		if(empty($topId) || $topId=='null'){
+			$topId=$uuId;
+		}
+		if($adId!='0' && $uuId!='0'){ 
+			$checkUser = D("UserWx")->where("userid='$uuId'")->getField('userid');
+			//检查用户是否 存在  不存在  属于非法用户
+			if($checkUser==FALSE){jsonReturn(110,'非法用户');}
 			$map['ad_id'] = array('like',$adId);
 			$adInfo = D("GenViewAd")->where($map)->getField('integral_num');
-			trace($adInfo);
 			if($adInfo!=FALSE){//存在这个广告
 				$data['myuuid'] = $topId;
 				$data['otheruuid'] = $uuId;
@@ -114,8 +120,17 @@ class SkEvent
 				$data['integral'] = $adInfo;
 				$ret = D("MerCreditsHelp")->add($data);
 				if($ret!=FALSE){
-					D("GenViewAd")->where($map)->setInc('zan_num',1);;
-					jsonReturn(1,'成功');
+					D("GenViewAd")->where($map)->setInc('zan_num',1);
+					$headers = array(
+							    'juyou-ticket:'.session('wxopenid-ticket')
+							);
+					$rest = httpPost(C('HD_BASE_URL').'api/uc/gc/viewadService/addRecommendIntegral', array('ad_id'=>$adId,'uid'=>$topId),$headers);		
+					$rest = json_decode($rest);
+					if($rest->errcode!=0){
+						jsonReturn(1,'成功s'); 
+					}else{
+						jsonReturn(110,$rest->errmsg);
+					}
 				}else{
 					jsonReturn(110,'添加积分失败');
 				}
