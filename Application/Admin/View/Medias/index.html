@@ -1,0 +1,107 @@
+<div class="row">
+	<div class="box col-md-12">
+		<button type="button" href="{:U('admin/medias/getMedias/id/2')}" class="btn btn-primary waiting" data-types='#media_img'>获取图片素材</button>
+		<button type="button" href="{:U('admin/medias/getMedias/id/1')}" class="btn btn-primary waiting" data-types='#media_news'>获取图文素材</button>
+	</div>
+</div>
+
+<div class="row">
+    <div class="box col-md-12">
+        <div class="box-inner">
+            <div class="box-header well">
+                <h2><i class="glyphicon glyphicon-th"></i> 微信素材</h2>
+
+                <div class="box-icon">
+                    <a href="#" class="btn btn-setting btn-round btn-default"><i class="glyphicon glyphicon-cog"></i></a>
+                    <a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+                    <a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+                </div>
+            </div>
+            <div class="box-content">
+                <ul class="nav nav-tabs" id="myTab">
+                    <li class="active"><a href="#media_img" class="media">图片素材</a></li>
+                    <li class=""><a href="#media_voice" class="media">语音素材</a></li>
+                    <li class=""><a href="#media_video" class="media">视频素材</a></li>
+                    <li class=""><a href="#media_news" class="media">图文素材</a></li>
+                </ul>
+
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane active" id="media_img">
+                        <h3>Charisma
+                            <small>a full featured template</small>
+                        </h3>
+                        <p>It's a full featured, responsive template for your admin panel. It's optimized for tablets
+                            and mobile phones.</p>
+
+                        <p>Check how it looks on different devices:</p>
+                        <a href="http://www.responsinator.com/?url=usman.it%2Fthemes%2Fcharisma" target="_blank"><strong>Preview on iPhone size.</strong></a>
+                        <br>
+                        <a href="http://www.responsinator.com/?url=usman.it%2Fthemes%2Fcharisma" target="_blank"><strong>Preview on iPad size.</strong></a>
+                    </div>
+                    <div class="tab-pane" id="media_voice">
+                        <h3>Custom
+                            <small>small text</small>
+                        </h3>
+                        <p>Sample paragraph.</p>
+
+                        <p>Your custom text.</p>
+                    </div>
+                    <div class="tab-pane" id="media_video">
+                        <h3>Messages
+                            <small>small text</small>
+                        </h3>
+                        <p>Sample paragraph.</p>
+
+                        <p>Your custom text.</p>
+                    </div>
+               		<div class="tab-pane" id ="media_news">333</div>                		
+                
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--/span-->
+</div>
+
+<script type="text/javascript">
+	$(document).off('click','.waiting').on('click','.waiting',function(){
+		var url = $(this).attr('href');
+		var types = $(this).data('types');
+		waiting(2,true);
+		$.ajax({
+			type:"get",
+			url:url,
+			success:function(retData){
+				waiting(2,false);
+				$('[href="'+types+'"]').click();
+			}
+		});
+	})
+	
+	$(document).off('click','.media').on('click','.media',function(){
+		var id = $(this).attr('href');
+		console.log('id值',id);
+		var url = '';
+		switch (id){
+			case '#media_news':url = "{:U('Medias/mediaNews')}";
+				break;
+			case '#media_img':url = "{:U('Medias/mediaImg')}";
+				break;
+			case '#media_video':url = "{:U('Medias/mediaVideo')}";
+				break;
+			case '#media_voice':url = "{:U('Medias/mediaVoice')}";
+				break;	
+			default: url = "{:U('Medias/mediaImg')}";
+				break;
+		}
+		$.ajax({
+			type:"get",
+			url:url,
+			success:function(retData){
+				$(id).html(retData);
+			}
+		});
+	})
+	
+	
+</script>

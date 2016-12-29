@@ -591,6 +591,37 @@ function docReady() {
 		return false;
 	}));
 	
+	/*
+	 * 模态框 加载特效
+	 */
+	
+	function waiting(type,offon){
+		switch (type){
+			case 1: var html = '<div class="load1"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>';
+				break;
+			case 2: var html = '<div class="load2"></div>';
+				break;
+			case 3: var html = '<div class="load3"><div class="double-bounce1"></div><div class="double-bounce2"></div></div>';
+				break;
+			case 4: var html = '<div class="load4"><div class="cube1"></div><div class="cube2"></div></div>';
+				break;
+			case 5: var html = '<div class="load5"><div class="dot1"></div><div class="dot2"></div></div>';
+				break;
+			case 6: var html = '<div class="load6"><div class="bounce1"></div><div class="bounce2"></div><div class="bounce3"></div></div>';
+				break;
+			case 7: var html = '<div class="load7"></div>';
+				break;	
+			default: var html = '<div class="load8"><div class="load8-container container1"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div><div class="load8-container container2"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div><div class="load8-container container3"><div class="circle1"></div><div class="circle2"></div><div class="circle3"></div><div class="circle4"></div></div></div>';
+				break;
+		}
+		if(offon!=true){
+			$('#modal_waiting').modal('hide');
+		}else{
+			$('#modal_waiting').find('.modal-content').html(html);
+			$('#modal_waiting').modal('show');
+		}
+	}
+	
 //additional functions for data table
 //
 //$.fn.dataTableExt.oApi.fnPagingInfo = function(oSettings) {
