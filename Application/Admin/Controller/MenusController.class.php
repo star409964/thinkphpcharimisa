@@ -161,7 +161,7 @@ class MenusController extends CommonController {
 		}
 	}
 	//重新组装数据
-		dump($list_all);
+//		dump($list_all);
 		$list = $list_all;
 		//$list	=	$model->field("id,title,pid,path,key,type,url,media_id,concat(path,'-',id) as bpath,sort")->order("bpath,sort desc")->where($date)->select();
 		foreach($list as $keys=>$value){

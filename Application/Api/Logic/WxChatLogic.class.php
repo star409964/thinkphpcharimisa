@@ -245,10 +245,10 @@ class WxChatLogic extends WxChatBaseLogic {
 	/**
 	 * 函数说明：获取临时素材---传递到oss上
 	 * @deprecated 创建时间：2016-12-19
-	 * @deprecated 备注：errcode   为0成功
 	 * @author mike<stardandan@126.com>
-	 * @param string $code
-	 * @return array
+	 * @param string $media_id【素材的id】
+	 * @param string $wxid【公众号的id】
+	 * @return json
 	 */
 	public function getMedias($media_id,$wxid){
 		$token = $this->getAccessToken($wxid);
@@ -256,8 +256,41 @@ class WxChatLogic extends WxChatBaseLogic {
 		$res = httpGet($url); 
 		$oss = A('AliOss','Logic');
 	    $oss->putObject('wx/'.$media_id.'.jpg',$res);
-		jsonReturn(1,'文件传递成功','http://shangke2.oss-cn-qingdao.aliyuncs.com/wx/'.$media_id.'.jpg');
+		jsonReturn(1,'文件传递成功',C('OSS_BASE_URL').'wx/'.$media_id.'.jpg');
 		
 	}
+	/**
+	 * 函数说明：获取微信的永久图片素材---传递到oss上
+	 * @deprecated 创建时间：2016-12-19
+	 * @author mike<stardandan@126.com>
+	 * @param string $media_id【素材的id】
+	 * @param string $wxid【公众号的id】
+	 * @return json
+	 */
+	public function getMediasImage($media_id,$wxid){
+		$token = $this->getAccessToken($wxid);
+		$url = 'https://api.weixin.qq.com/cgi-bin/material/get_material?access_token='.$token;
+		$res = httpPost($url, json_encode(array('media_id'=>$media_id),JSON_UNESCAPED_UNICODE)); 
+		//$oss = A('AliOss','Logic');
+		$oss = new \Api\Logic\AliOssLogic();
+	    $oss->putObject('wxmedia/'.$media_id.'.jpg',$res);
+		return 'wxmedia/'.$media_id.'.jpg';
+	}
+	
+	 /**
+	 * 函数说明：获取永久素材列表
+	 * @deprecated 创建时间：2016-12-24
+	 * @deprecated 备注：素材的类型，图片（image）、视频（video）、语音 （voice）、图文（news）
+	 * @author mike<stardandan@126.com>
+	 * @param string $wxid【公众号的id】
+	 * @return array
+	 */
+	   public function getMaterials($wxid,$type='news',$offset=0,$count=20){
+	 	$token = $this->getAccessToken($wxid);
+		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token='.$token;
+		$srt = '{"type": "'.$type.'", "offset":"'.$offset.'","count":"'.$count.'"}';
+		$res = json_decode(httpPost($url,$srt),TRUE); 
+		return $res;
+	 }
 	
 }//class end

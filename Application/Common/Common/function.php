@@ -156,4 +156,16 @@ function ReturnWxError($k) {
 		return $aaa[$k];
 	}
 }
+
+function getWxid(){
+	//$wxid = session('Admin_wxid');
+	$wxid = 1;
+	if($wxid){
+		return $wxid;
+	}else{
+		$this->error('没有选择操作哪个公众号');
+	}
+}
+
+
 ?>

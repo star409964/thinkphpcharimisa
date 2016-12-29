@@ -46,6 +46,7 @@ class CommonNotifyEvent implements PayNotifyInterface
 		SetLog('支付回调参数='.json_encode($data), 'sknotify.log');	
 		if(array_key_exists("order_no", $data)){
 			$data['type'] = 1; 
+			$data['amount'] = $data['amount']*100;
 			$ret = D("SysWxchatCallbackLog")->add($data);
 			SetLog('支付结果='.json_encode($ret), 'sknotify.log');	
 				if($ret!=false){

@@ -64,12 +64,6 @@ function pwdHash($password, $type = 'md5') {
 	return hash ( $type, $password );
 }
 
-function getWxid(){
-	//$wxid = session('Admin_wxid');
-	$wxid = 1;
-	if($wxid){
-		return $wxid;
-	}else{
-		$this->error('没有选择操作哪个公众号');
-	}
+function getMediaImagUrl($media_id_myurl){
+	return C("OSS_BASE_URL").$media_id_myurl;
 }

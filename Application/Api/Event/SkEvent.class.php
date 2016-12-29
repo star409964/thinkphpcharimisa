@@ -169,7 +169,7 @@ class SkEvent
 			if($info==FALSE)jsonReturn(110,'获取信息失败');
 			jsonReturn(1,'获取信息成功',$info);
 		}else{
-			jsonReturn(110,'你没有登录');
+			jsonReturn(120,'你没有登录');
 		}
 	}
 	
@@ -185,16 +185,16 @@ class SkEvent
 			$userid = $info['user_base'];
 			$data = I('post.');
 			if(array_key_exists("birthday", $data) || array_key_exists("mobile", $data) || array_key_exists("papersno", $data)){
-				D("UserBase")->where("userid='$userid'")->save($data);
+				$ret1 = D("UserBase")->where("userid='$userid'")->save($data);
 			}	
 			$ret = D("UserWx")->where("openid='$openid'")->save($data);
-			if($ret!=FALSE){
+			if($ret!=FALSE || $ret1!=FALSE){
 				jsonReturn(1,'信息设置成功');
 			} else{
 				jsonReturn(110,'信息设置失败');
 			}
 		}else{
-			jsonReturn(110,'你没有登录');
+			jsonReturn(120,'你没有登录');
 		}
 	}
 	
