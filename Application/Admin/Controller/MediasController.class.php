@@ -35,11 +35,23 @@ class MediasController extends CommonController {
 		$this->display ();
 	}
 	
+	public function mediaImages() {
+		if (method_exists ( $this, '_filter' )) {
+			$this->_filter ( $map );
+		}
+		$mode = M("MediaImages");
+		if (! empty ( $mode )) {
+			$this->_list ( $mode, $map ,'id');
+		}
+		$this->display ();
+	}
+	
 	
 	//:  1-news，2-image，3-video，4-voice，5-music
 	public function getMedias($id){
 		$wxChat = A("Api/Media","Event");
-		$wxChat->getmedia(1,$id);//微信号，类型
+		$wxid = getWxid();
+		$wxChat->getmedia($wxid,$id);//微信号，类型
 	}
 	
 	public function index(){

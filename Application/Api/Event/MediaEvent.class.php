@@ -72,7 +72,7 @@ class MediaEvent {
 			}
 
 		} else {//还有素材  接着执行
-			while ($item_count <= 20 && $item_count > 0) {
+			while ($item_count <= 20 && $item_count > 0) { 
 				if ($ts == 1) {
 					$this -> insertMediaNews($wxid, $res['item']);
 				} else {
@@ -138,12 +138,20 @@ class MediaEvent {
 		$wxchat = new \Api\Logic\WxChatLogic();
 		$list = $mo -> getField('media_id', TRUE);
 			foreach ($data as $key => $value) {
+				if($list!=FALSE){
 					if (!in_array($value['media_id'], $list)) { 
 						$data[$key]['myurl'] = $wxchat->getMediasImage($value['media_id'],$wxid);
-						$datas = $data[$key];
+						$data[$key]['wxid'] = $wxid;
+						$datas[] = $data[$key];
 					}
+				}else{
+						$data[$key]['myurl'] = $wxchat->getMediasImage($value['media_id'],$wxid);
+						$data[$key]['wxid'] = $wxid;
+						$datas[] = $data[$key];
+				}
 		}
 			if(!empty($datas)){
+				trace(json_encode($datas));
 				$resk = $mo->addAll($datas);
 				if ($resk != FALSE) {
 						echo '插入成功-=</br>';

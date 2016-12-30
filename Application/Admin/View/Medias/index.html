@@ -64,6 +64,11 @@
 </div>
 
 <script type="text/javascript">
+$(document).ready(function(){
+	$('[href="#media_img"]').click();
+})
+
+
 	$(document).off('click','.waiting').on('click','.waiting',function(){
 		var url = $(this).attr('href');
 		var types = $(this).data('types');
@@ -85,13 +90,13 @@
 		switch (id){
 			case '#media_news':url = "{:U('Medias/mediaNews')}";
 				break;
-			case '#media_img':url = "{:U('Medias/mediaImg')}";
+			case '#media_img':url = "{:U('Medias/mediaImages')}";
 				break;
 			case '#media_video':url = "{:U('Medias/mediaVideo')}";
 				break;
 			case '#media_voice':url = "{:U('Medias/mediaVoice')}";
 				break;	
-			default: url = "{:U('Medias/mediaImg')}";
+			default: url = "{:U('Medias/mediaImgages')}";
 				break;
 		}
 		$.ajax({
