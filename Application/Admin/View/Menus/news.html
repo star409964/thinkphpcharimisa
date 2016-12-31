@@ -1,0 +1,105 @@
+<style type="text/css">
+	img{
+		width: 100%;
+	}
+	.panel-group .panel+ .panel {
+		border-radius: 0;
+		margin-top: 0;
+		border-top: 0;
+	}
+	
+	.panel-group .panel:first-child .img {
+		overflow: hidden;
+		position: relative;
+		background-color: #ececec;
+		color: #c0c0c0;
+		text-align: center;
+	}
+	
+	.panel-group .panel+ .panel .img {
+		float: right;
+		/*position: absolute;*/
+		right: 15px;
+		top: 12px;
+		height: 80px;
+		width: 80px;
+		background-color: #ececec;
+		color: #c0c0c0;
+		line-height: 80px;
+		text-align: center;
+		overflow: hidden;
+	}
+	
+	.panel-group .panel+ .panel .text h4 {
+		word-break: break-all;
+		font-size: 10px;
+		line-height: 1.2em;
+		/*height: 60px;*/
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
+	
+	.panel-group .panel .text {
+		float: left;
+		width: 100%;
+	}
+	
+	.panel-group .panel:first-child .img span {
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		height: 17px;
+		line-height: 17px;
+		width: 100%;
+		background: rgba(0, 0, 0, 0.7);
+		color: #fff;
+		padding: 0 10px;
+	}
+</style>
+<div class="row">
+	<volist name='list' id='vo'>
+
+		<div class="col-xs-12 col-sm-12 col-md-6 col-lg-3 water">
+			<div class="panel-group">
+				<volist name='vo' id='item' key='s'>
+					<eq name='s' value='1'>
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<div class="img">
+									<i class="default"></i>
+									<a href="javascript:void(0);" onclick="addMediasInput(this)" data-mediaid="{$item.media_id}"><img src="{$item.thumb_myurl|getMediaImagUrl}"></a>
+									<span class="text-left">{$item.title}</span>
+								</div>
+							</div>
+						</div>
+						<else/>
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<a href="javascript:void(0);" onclick="addMediasInput(this)" data-mediaid="{$item.media_id}">
+									<div class="text">
+										<h4>{$item.title}</h4>
+									</div>
+									<div class="img">
+										<img src="{$item.thumb_myurl|getMediaImagUrl}">
+										<i class="default">缩略图</i>
+									</div>
+								</a>
+							</div>
+						</div>
+					</eq>
+				</volist>
+			</div>
+		</div>
+
+	</volist>
+</div>
+<!--row end-->
+	
+	
+<div class="center-block images_html">
+	<ul class="pagination pagination-centered">
+		{$page}
+	</ul>
+</div>	
+

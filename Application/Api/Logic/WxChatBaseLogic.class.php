@@ -24,7 +24,8 @@ class WxChatBaseLogic {
 
 	public function getAccessToken($id) {
 		if($id==null){jsonReturn(110,'请传递公众号id');}
-		if (!S('access_token_' . $id)) {
+		$cacheT = S(array('type'=>'file','prefix'=>'wxtoken'.$id,'expire'=>7000));
+		if (!$cacheT->token) {
 			// 如果是企业号用以下URL获取access_token
 			// $url = "https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=$this->appId&corpsecret=$this->appSecret";
 			$appId = self::$accountList[$id]['appid'];
@@ -34,13 +35,14 @@ class WxChatBaseLogic {
 			SetE($res);
 			$access_token = $res['access_token'];
 			if ($access_token) {
-				S('access_token_' . $id, $access_token, 5000);
+				$cacheT->token = $access_token;
 			}
-			SetLog('获取accesstoken的时间-----------token='.$access_token,'accesstoken.log');
+			//SetLog('获取accesstoken的时间-----------token='.$access_token,'accesstoken.log');
 		} else {
-			$access_token = S('access_token_' . $id);
-			SetLog('当前accesstoken的-----------token='.$access_token,'nowaccesstoken.log');
+			 $access_token = $cacheT->token; 
+			//SetLog('当前accesstoken的-----------token='.$access_token,'nowaccesstoken.log');
 		}
+		trace($access_token,'此次的token');
 		return $access_token;
 	}
 

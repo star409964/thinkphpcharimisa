@@ -1200,3 +1200,7 @@ ul.github-buttons li {
     -webkit-transform: scale(1.0);
   }
 }
+/*选项卡去除虚线*/
+.nav-tabs>li>a {
+			outline: none;
+		}

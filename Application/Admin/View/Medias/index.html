@@ -27,16 +27,7 @@
 
                 <div id="myTabContent" class="tab-content">
                     <div class="tab-pane active" id="media_img">
-                        <h3>Charisma
-                            <small>a full featured template</small>
-                        </h3>
-                        <p>It's a full featured, responsive template for your admin panel. It's optimized for tablets
-                            and mobile phones.</p>
-
-                        <p>Check how it looks on different devices:</p>
-                        <a href="http://www.responsinator.com/?url=usman.it%2Fthemes%2Fcharisma" target="_blank"><strong>Preview on iPhone size.</strong></a>
-                        <br>
-                        <a href="http://www.responsinator.com/?url=usman.it%2Fthemes%2Fcharisma" target="_blank"><strong>Preview on iPad size.</strong></a>
+                        <div class="load2"></div>
                     </div>
                     <div class="tab-pane" id="media_voice">
                         <h3>Custom
@@ -64,10 +55,12 @@
 </div>
 
 <script type="text/javascript">
-$(document).ready(function(){
-	$('[href="#media_img"]').click();
-})
 
+	$(function(){
+		setTimeout(function(){
+			$('[href="#media_img"]').click();
+		},500);
+	})
 
 	$(document).off('click','.waiting').on('click','.waiting',function(){
 		var url = $(this).attr('href');
@@ -104,9 +97,29 @@ $(document).ready(function(){
 			url:url,
 			success:function(retData){
 				$(id).html(retData);
+				bing_this_html(id);
 			}
 		});
 	})
 	
-	
+	function bing_this_html(id){
+		$(document).off('click','.medias_html a').on('click','.medias_html a',function(){
+			var url = $(this).attr('href');
+			$.ajax({
+			url: url,
+			type: 'get',
+			success: function(retData) {
+				$(id).html(retData);
+			},
+			error:function(e){
+				noty({
+						text: '服务器请求错误',
+						layout: "top",
+						timeout: 1000
+					});
+			}
+		});
+			return false;
+		})
+	}
 </script>

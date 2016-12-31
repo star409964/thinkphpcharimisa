@@ -134,6 +134,7 @@ class MenusController extends CommonController {
 		$mid = I('menuid');
 		if(empty($mid)) jsonReturn('110','参数错误');
 		$button = $this->addWxMenu($mid);
+//		dump($button);
 		$wxid = getWxid();
 		$wechatObj = A("Api/WxChat",'Logic');
 		$list = $wechatObj->setMenu($button,$wxid);
@@ -220,7 +221,40 @@ class MenusController extends CommonController {
 		}
 		return $res;
 	}
+	/*
+	 * 选择素材
+	 */
+	public function selectMedias(){
+		$this->display();
+	}
 	
+	public function images(){
+		$map['wxid'] = getWxid();
+		//$list = M('MediaImages')->where($map)->select();
+		$model = M('MediaImages');
+		$this->_list($model, $map,'id');
+		$this->display();
+	}
 	
+	public function news() {
+		$map['wxid'] = getWxid();
+		$mode = M("MediaNews");
+		if (! empty ( $mode )) {
+			$media_list = $mode->where($map)->group('media_id')->getField('media_id',true);
+			trace('sql=',M()->getLastSql());
+			$count = count($media_list);
+			$p = new \Think\Page ( $count, 10 );
+			for ($i=$p->firstRow; $i <$p->listRows ; $i++) { 
+				$map['media_id'] = $media_list[$i];
+				if(!empty($map['media_id'])){
+					$list = $mode->where($map)->select();
+					$datas[] = $list;
+					trace('执行循环内部if的次数');
+				}
+			}
+			$this->assign('list',$datas);
+		}
+		$this->display ();
+	}
 	
 }//class end	

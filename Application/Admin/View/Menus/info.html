@@ -180,7 +180,7 @@
 													</label>
 													
 													
-													<div data-type="view">
+													<div data-type="view" style="display: none;">
 														<hr>
 														<div class="input-group">
 															<input class="form-control ng-pristine ng-untouched ng-valid ng-not-empty ajaxUpdate"  type="text" name="url">
@@ -198,7 +198,7 @@
 														<div class="input-group">
 															<input class="form-control ng-pristine ng-valid ng-touched ng-not-empty ajaxUpdate" type="text" name="media_id">
 															<div class="input-group-btn">
-																<button class="btn btn-primary" id="media_id"><i class="fa fa-external-link"></i> 选择素材</button>
+																<a class="btn btn-primary lyx_xuanzesucai" id="media_id" data-url="{:U('selectMedias')}"><i class="fa fa-external-link"></i> 选择素材</a>
 															</div>
 														</div>
 														<span class="help-block">公众平台的素材id</span>
@@ -367,13 +367,36 @@ function addChildMenuAjax(id,that,num){
  */
 $('[type="radio"]').on('change',function(){
 	var type = $(this).val();
-	if(type=='media_id' || type == 'view_limited'){
-		$('[data-type="view"]').css('display','none');
-		$('[data-type="media_id"]').css('display','block');
-	}else{
-		$('[data-type="view"]').css('display','block');
-		$('[data-type="media_id"]').css('display','none');
+//	if(type=='media_id' || type == 'view_limited'){
+//		$('[data-type="view"]').css('display','none');
+//		$('[data-type="media_id"]').css('display','block');
+//	}else{
+//		$('[data-type="view"]').css('display','block');
+//		$('[data-type="media_id"]').css('display','none');
+//	}
+	switch (type){
+		case 'media_id':
+				$('[data-type]').css('display','none');
+				$('[data-type="media_id"]').css('display','block');
+			break;
+		case 'view_limited':
+				$('[data-type]').css('display','none');
+				$('[data-type="media_id"]').css('display','block');
+			break;
+		case 'view':
+				$('[data-type]').css('display','none');
+				$('[data-type="view"]').css('display','block');
+			break;
+		case 'click':
+				$('[data-type]').css('display','none');
+				$('[data-type="view"]').css('display','block');
+			break;	
+		default:
+				$('[data-type]').css('display','none');
+				$('[data-type="view"]').css('display','block');
+			break;
 	}
+
 })
 
 /*
@@ -392,9 +415,9 @@ $(document).off('click','.click-item').on('click','.click-item',function(e){
 					$('#menu_title').val(retData.result.name);
 					$("input[type=hidden][name=id]").val(retData.result.id);
 					$("input[type=radio][name=type][value='"+retData.result.type+"']").attr("checked",true); 
-					$("input[type=radio][name=type][value='"+retData.result.type+"']").click();
 					$("input[type=text][name=url]").val(retData.result.url);
 					$("input[type=text][name=media_id]").val(retData.result.media_id);
+					$("input[type=radio][name=type][value='"+retData.result.type+"']").change();
 					$(".ajaxUpdate").off().on('blur',function(){
 						var type = $(this).attr('name');
 						if(type=="view"){
@@ -583,5 +606,18 @@ $(".btns-float-right").off().on('click',function(){
 		});
 	}
 })
+
+/*
+ * 选择素材 事件
+ */
+
+$(document).off('click','.lyx_xuanzesucai').on('click','.lyx_xuanzesucai',function(){
+	var that = this;
+	var url = $(that).data('url');
+	model_all_html(url);
+});
+
+
+
 
 </script>

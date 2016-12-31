@@ -87,6 +87,7 @@ class SkNotifyEvent implements PayNotifyInterface
 		$url = C('HD_BASE_URL').'/api/ss/tc/ticketorder/paybyweixin?timestamp='.$data['timestamp'].'&trade_no='.$data['trade_no'].'&jy_appid='.$data['jy_appid'].'&code='.$data['code'].'&res_sign='.$data['paySign'];
 		$res = httpGet($url);
 		$rest = json_decode($res,true);
+		SetLog('调用dlq网址＝'.$url.'-----res='.$res, 'dlq.log');
 		if($rest['errcode']!=0){//出票失败
 			SetLog('调用dlq网址＝'.$url, 'dlq.log');
 		return FALSE;

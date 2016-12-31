@@ -19,7 +19,7 @@ class WxChatLogic extends WxChatBaseLogic {
 	//公众号添加url的时候 认证需要调用此函数
 	public function valid() {
 		$accountList = $this -> getAccountList();
-		$id = I('id');
+		$id = $_GET['id'];
 		if (I('signature') && I('timestamp') && I('nonce')) { 
 			$res = $this -> checkSignature(I('signature'), I('timestamp'), I('nonce'), $accountList[$id]['token' ]);
 				if($res){
@@ -28,7 +28,8 @@ class WxChatLogic extends WxChatBaseLogic {
 					exit;
 				}
 			} else {
-				$this -> acceptMsg();
+				//SetLog('测试当前的id='.$id, 'valid.log');
+				$this -> acceptMsg($id);
 			}
 		}
 	//认证使用
@@ -48,9 +49,9 @@ class WxChatLogic extends WxChatBaseLogic {
 	/*
 	 * 处理微信服务器推送过来的消息
 	 */
-	private function acceptMsg() {
+	private function acceptMsg($wxid) {
 		$msg = A('WxChatMsg','Logic');
-		$msg->acceptMsg();
+		$msg->acceptMsg($wxid);
 	}
 	
 	

@@ -1,7 +1,7 @@
 <?php
 namespace Api\Logic;
 use Api\Logic\WxSignLogic;
-class DlqSignLogic extends WxSignEvent
+class DlqSignLogic extends WxSignLogic
 {
 	/**
 	* 设置 jy_appid

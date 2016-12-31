@@ -1,0 +1,62 @@
+<div class="modal-dialog">
+	<div class="modal-content">
+		<div class="modal-header">
+			<button class="btn btn-default selectMedias_btn" data-url = "{:U('news')}">图文</button>
+			<button class="btn btn-default btn-primary selectMedias_btn" data-url = "{:U('images')}">图片</button>
+			<button class="btn btn-default">视频</button>
+			<button class="btn btn-default">语音</button>
+		</div>
+		<div class="modal-body" id="medias_body">
+			
+		</div>
+	</div>
+</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('.selectMedias_btn').off().on('click',function(){
+			$(this).parents('.modal-header').find('.selectMedias_btn').removeClass('btn-primary');
+			$(this).addClass('btn-primary');
+			var url = $(this).data('url');
+			selectMediaAjax(url);
+		});
+		
+		selectMediaAjax("{:U('images')}");
+		$(document).off('click','.images_html a').on('click','.images_html a',function(){
+			var url = $(this).attr('href');
+			$.ajax({
+			url: url,
+			type: 'get',
+			success: function(retData) {
+				$('#medias_body').html(retData);
+			},
+			error:function(e){
+				noty({
+						text: '服务器请求错误',
+						layout: "top",
+						timeout: 1000
+					});
+			}
+		});
+			return false;
+		})
+	});
+	
+	function selectMediaAjax(url){
+		$.ajax({
+			type:"get",
+			url:url,
+			success:function(retData){
+				$('#medias_body').html(retData);
+			}
+		});
+	}
+	/*
+	 * 模态框选择图片后 把media_id显示在文本框里面
+	 */
+	function addMediasInput(obj){
+		$('[name="media_id"]').val($(obj).data('mediaid'));
+		$('[name="media_id"]').focus();// 获取焦点直接更新
+		$('#modal_other').modal('hide');
+	}
+</script>

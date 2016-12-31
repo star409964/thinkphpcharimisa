@@ -571,7 +571,7 @@ function docReady() {
 	 * ajax-分页请求
 	 * 2016-11-27
 	 */
-	$(document).on("click", ".pagination a", (function() {
+	$(document).on("click", ".ajax_page a", (function() {
 		var url = $(this).attr('href');
 		$.ajax({
 			url: url,
@@ -620,6 +620,20 @@ function docReady() {
 			$('#modal_waiting').find('.modal-content').html(html);
 			$('#modal_waiting').modal('show');
 		}
+	}
+	/*
+	 * 模态框整个 填充内容
+	 */
+	function model_all_html(url){
+		$('#modal_other').modal();
+		$("#modal_other").load(url,
+			function() {
+				$('#modal_other').modal({
+					keyboard: false
+				});
+				$('#modal_other').modal('show');
+			}
+		);
 	}
 	
 //additional functions for data table

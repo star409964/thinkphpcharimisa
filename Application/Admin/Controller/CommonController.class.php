@@ -160,6 +160,7 @@ class CommonController extends Controller {
 			$sortAlt = $sort == 'desc' ? '升序排列' : '倒序排列'; //排序提示
 			$sort = $sort == 'desc' ? 1 : 0; //排序方式
 			//模板赋值显示
+			trace(json_encode($voList),'公共的列表信息');
 			$this->assign ( 'list', $voList );
 			$this->assign ( 'sort', $sort );
 			$this->assign ( 'order', $order );
