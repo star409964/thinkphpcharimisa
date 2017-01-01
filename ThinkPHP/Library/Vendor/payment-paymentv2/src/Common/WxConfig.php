@@ -1,8 +1,8 @@
 <?php
 /**
- * @author: helei
- * @createTime: 2016-07-15 14:56
- * @description: 微信配置文件
+ * @author: mike狼
+ * @createTime: 2017-1-1 14:56
+ * @description: 微信配置文件-增加微信红包接口
  * @link      https://github.com/helei112g/payment/tree/paymentv2
  * @link      https://helei112g.github.io/
  */
@@ -68,6 +68,9 @@ final class WxConfig extends ConfigInterface
 
     // 企业付款的查询
     const TRANS_QUERY_URL = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/gettransferinfo';
+
+	// 企业红包
+    const RED_PACKAGE_URL = 'https://api.mch.weixin.qq.com/mmpaymkttransfers/sendredpack';
 
     // 关闭订单url  尚未接入
     const CLOSE_URL = 'https://api.mch.weixin.qq.com/pay/closeorder';

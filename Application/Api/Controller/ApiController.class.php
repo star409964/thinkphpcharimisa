@@ -312,6 +312,21 @@ class ApiController extends Controller {
 		}
 	}
 	
+	/*
+	 * 微信 发送红包接口【签名加密】
+	 */
+	public function sendRedPackage(){
+		$data = I('post.');
+		if(empty($data['wxid']) || empty($data['openid']) || empty($data['send_name']) || empty($data['wishing']) || empty($data['act_name']) || empty($data['remark']) || empty($data['trans_fee']))
+		{
+			jsonReturn(110,'缺少参数');
+		}
+		
+		$pay = A("SignApi",'Logic');
+		
+		$pay->sendMoneyUser($data['wxid'],$data);
+		
+	}
 	
 	public function tt(){
 		//echo U('justBaseAouthMore',array('id'=>I('wxid')),'',TRUE);
@@ -353,19 +368,54 @@ class ApiController extends Controller {
 //				echo '22';
 //				trace($info);	
 
-			$sk = array("amount"=>"1.50",
-							"channel"=>"wx",
-							"order_no"=>"S101482215039803",
-							"buyer_id"=>"oaugowRfzIQDRqk0T4GCi3F1LxzE",
-							"trade_state"=>"success",
-							"transaction_id"=>"4006962001201612203383238040",
-							"time_end"=>"2016-12-20 14:24:10",
-							"notify_time"=>"2016-12-20 14:25:10",
-							"notify_type"=>"trade",
-							"extra_param"=>"1");
-			dump($sk);
-			$ret = D("SysWxchatCallbackLog")->add($sk);
-			dump($ret);
-		
+//			$sk = array("amount"=>"1.50",
+//							"channel"=>"wx",
+//							"order_no"=>"S101482215039803",
+//							"buyer_id"=>"oaugowRfzIQDRqk0T4GCi3F1LxzE",
+//							"trade_state"=>"success",
+//							"transaction_id"=>"4006962001201612203383238040",
+//							"time_end"=>"2016-12-20 14:24:10",
+//							"notify_time"=>"2016-12-20 14:25:10",
+//							"notify_type"=>"trade",
+//							"extra_param"=>"1");
+//			dump($sk);
+//			$ret = D("SysWxchatCallbackLog")->add($sk);
+//			dump($ret);U('Api/CommonNotify',array('wxid'=>1),'',TRUE);
+
+
+	//-----------------------  企业红包
+
+//			$url = 'http://dlqt.juyouhx.com/Api/Api/authBase/wxid/1?rurl=http://dlqt.juyouhx.com/Api/Api/tt';
+//		    $data['openid'] = session('wxopenid');
+//			if(empty($data['openid'])){
+//				redirect($url);
+//			}
+//
+//
+//		    $wxpay = A('WxPay',"Logic");
+//		    $data['send_name'] = '上帝是小孩';
+//		    $data['wishing'] = '祝您新年快乐心想事成，美女天天伴，money随时赚';
+//		    $data['act_name'] = '抢红包活动';
+//		    $data['remark'] = '备注说明：啦啦';
+//			$list = S('openid_list');
+//			$num = session('nums');
+//			$num++;
+//			session('nums',$num);
+//			if(!in_array($data['openid'], $list)){
+//				$list[] = $data['openid'];
+//			     S('openid_list',$list);
+//				$ret = $wxpay->sendRedPackage(1,$data);
+//				echo '<h1>关闭页面去看红包把。一会记得回来哦！！！</h1>';
+//			}else{
+//				if($num<4){
+//					echo '<h1>哥们你在刷刷几次，还有哦。加油～～～【'.$num.'次】</h1>';
+//				}else{
+//					session('nums',0);
+//					echo '<h1>刷新的过瘾不，说什么你都信。哈哈</h1>';
+//				}
+//			}
+			//------------------------企业红包
+			
 	}
+	
 }

@@ -62,4 +62,10 @@ class WxPayConfig{
 	 * @var int
 	 */
 	const REPORT_LEVENL = 1;
+	
+	private $config=null;
+	
+	public function setConfig($data){
+		$this->config
+	}
 }

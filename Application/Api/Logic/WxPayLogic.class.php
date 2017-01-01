@@ -16,6 +16,8 @@ Vendor('payment-paymentv2.autoload');
 use Payment\ChargeContext;
 use Payment\Config; 
 use Payment\Common\PayException;
+use Payment\TransferContext;
+use Payment\RedPackageContext;
 use Api\Logic\WxChatBaseLogic;
 class WxPayLogic extends WxChatBaseLogic {
 	
@@ -57,6 +59,36 @@ class WxPayLogic extends WxChatBaseLogic {
 		
 	}
     
+	/*
+	 * 微信企业给用户 付款【没测试】
+	 */
+	public function payUserMoney($wxid,$notifyurl,$transData){
+		$transData = [
+					    'trans_no' => $this->createPayid(),
+					    'trans_data'   => [
+					        [
+					            'serial_no' => $this->createPayid(),
+					            'user_account' => 'oaugowRfzIQDRqk0T4GCi3F1LxzE',// 微信转款时，为用户所关注公众号的openid
+					            'user_name' => 'mike',
+					            'trans_fee' => '1', //单位元
+					            'desc'  => '测试批量转款',
+					        ]
+					    ],
+					];
+		
+		$refund = new TransferContext();
+		$wxconfig = $this->getConfig($wxid,$notifyurl);
+		try {
+		    // 微信的企业付款， 仅支持单笔
+		    $type = Config::WEIXIN;
+		    $refund->initTransfer(Config::WEIXIN, $wxconfig);
+		
+		    $ret = $refund->transfer($transData);
+		} catch (PayException $e) {
+		    echo $e->errorMessage();exit;
+		}
+
+	}
 	
 	private function getConfig($wxid,$notifyurl){
 		return [
@@ -70,7 +102,47 @@ class WxPayLogic extends WxChatBaseLogic {
 			    'key_path'  => self::$accountList[$wxid]['key_path'],
 			];
 	}
-    
+	
+	
+    /*
+	 * 微信-企业红包
+	 */
+	public function sendRedPackage($wxid,$data){
+		$transData = [
+					    'trans_no' => $this->createPayid(),
+					    'trans_data'   => [
+					        [
+					            'serial_no' => $this->createPayid(),
+					            'user_account' => $data['openid'],// 微信转款时，为用户所关注公众号的openid
+					            'trans_fee' => $data['trans_fee'], //单位元
+					            'total_num' => '1',
+					            'send_name' => $data['send_name'],
+					            'wishing' => $data['wishing'],
+					            'act_name' => $data['act_name'],
+					            'remark'  => $data['remark'],
+					            'scene_id'  => '',
+					        ]
+					    ],
+					];
+		
+		$refund = new RedPackageContext();
+		$wxconfig = $this->getConfig($wxid,'http://text');
+		try {
+		    // 微信的企业付款， 仅支持单笔
+		    $type = Config::WEIXIN;
+		    $refund->initTransfer(Config::WEIXIN, $wxconfig);
+		
+		    $ret = $refund->transfer($transData);
+		} catch (PayException $e) {
+		    echo $e->errorMessage();exit;
+		}
+		
+		return $ret;
+
+	}
+	
+	
+	
     //  生成订单号 便于测试
 	function createPayid()
 	{

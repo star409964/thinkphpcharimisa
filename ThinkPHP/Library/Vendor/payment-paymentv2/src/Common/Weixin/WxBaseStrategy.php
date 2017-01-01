@@ -1,7 +1,7 @@
 <?php
 /**
- * @author: helei
- * @createTime: 2016-07-28 18:04
+ * @author: mike狼
+ * @createTime: 2017-1-1 18:04
  * @description: 微信的策略基类
  */
 
@@ -137,8 +137,8 @@ abstract class WxBaseStrategy implements BaseStrategy
         $this->reqData->setSign();
         $xml = DataParser::toXml($this->reqData->getData());
         $ret = $this->sendReq($xml);
-
-        // 检查返回的数据是否被篡改
+		
+//         红包返回数据  没有 签名字段
         $flag = $this->signVerify($ret);
         if (!$flag) {
             throw new PayException('微信返回数据被篡改。请检查网络是否安全！');
@@ -159,14 +159,16 @@ abstract class WxBaseStrategy implements BaseStrategy
     }
 
     /**
-     * 检查微信返回的数据是否被篡改过
+     * 检查微信返回的数据是否被篡改过【如果没有签名数据返回，不验证】
      * @param array $retData
      * @return boolean
      * @author helei
      */
     protected function signVerify(array $retData)
-    {
+	{
         $retSign = $retData['sign'];
+		if(empty($retSign)) return true;
+		
         $values = ArrayUtil::removeKeys($retData, ['sign', 'sign_type']);
 
         $values = ArrayUtil::paraFilter($values);
@@ -178,7 +180,6 @@ abstract class WxBaseStrategy implements BaseStrategy
         $signStr .= "&key=" . $this->config->md5Key;
 
         $string = md5($signStr);
-
         return strtoupper($string) === $retSign;
     }
 }
