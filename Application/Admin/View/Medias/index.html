@@ -23,6 +23,7 @@
                     <li class=""><a href="#media_voice" class="media">语音素材</a></li>
                     <li class=""><a href="#media_video" class="media">视频素材</a></li>
                     <li class=""><a href="#media_news" class="media">图文素材</a></li>
+                    <li class=""><a href="#media_basic" class="media">文字素材</a></li>
                 </ul>
 
                 <div id="myTabContent" class="tab-content">
@@ -45,7 +46,8 @@
 
                         <p>Your custom text.</p>
                     </div>
-               		<div class="tab-pane" id ="media_news">333</div>                		
+               		<div class="tab-pane" id ="media_news">333</div>     
+               		<div class="tab-pane" id ="media_basic">333</div>     
                 
                 </div>
             </div>
@@ -88,6 +90,8 @@
 			case '#media_video':url = "{:U('Medias/mediaVideo')}";
 				break;
 			case '#media_voice':url = "{:U('Medias/mediaVoice')}";
+				break;
+			case '#media_basic':url = "{:U('Medias/mediaBasic')}";
 				break;	
 			default: url = "{:U('Medias/mediaImgages')}";
 				break;

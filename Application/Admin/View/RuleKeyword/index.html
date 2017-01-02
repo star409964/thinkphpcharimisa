@@ -1,0 +1,102 @@
+<div>
+	<ul class="breadcrumb">
+		<li><a href="#">微信管理</a></li>
+		<li><a href="#">回复规则管理</a></li>
+	</ul>
+</div>
+
+<div class="row">
+	<div class="box col-md-12">
+		<button type="button" href="{:U('add')}" class="btn btn-primary ajax-list" data-title='添加节点'>添加</button>
+		<button type="button" class="btn btn-danger" id='table_del'>批量删除</button>
+		<button href="{:U('user')}" class="btn btn-primary modal_add" data-title='添加用户到群组'>添加用户到组</button>
+	</div>
+</div>
+
+<div class="row">
+	<div class="box col-md-12">
+		<div class="box-inner">
+			<div class="box-header well" data-original-title="">
+				<h2><i class="glyphicon glyphicon-filter"></i> 群组列表</h2>
+
+				<div class="box-icon">
+					<a href="#" class="btn btn-minimize btn-round btn-default"><i class="glyphicon glyphicon-chevron-up"></i></a>
+					<a href="#" class="btn btn-close btn-round btn-default"><i class="glyphicon glyphicon-remove"></i></a>
+				</div>
+			</div>
+			<div class="box-content">
+				<div class="alert alert-info">
+					<form action="{:U('index')}" method="post" class="form-inline search-form" role="form">
+						<div class="form-group">
+							<label class="sr-only" for="exampleInputEmail2">Email address</label>
+							<input type="email" name='email' value="{$Think.post.email}" class="form-control" placeholder="Enter email">
+						</div>
+						<div class="form-group">
+							<div class="input-group">
+								<div class="input-group-addon">🔍</div>
+								<input class="form-control" name='search' value="{$Think.post.search}" type="search" placeholder="搜索内容">
+							</div>
+						</div>
+						
+						<div class="form-group">
+								<label class="sr-only" for="exampleInputEmail2"></label>
+								<input class="form-control" name='dtime'value="{$Think.post.dtime}" type="datetime" placeholder="开始时间" data-provide="mydatepicker">
+						</div>
+
+						<div class="form-group">
+								<select class="form-control" name="cat">
+									<option>选择分类</option>
+									<option <eq name="Think.post.cat" value="2">selected</eq> value="2">2</option>
+									<option <eq name="Think.post.cat" value="3">selected</eq> value="2">3</option>
+									<option <eq name="Think.post.cat" value="4">selected</eq> value="3">4</option>
+									<option <eq name="Think.post.cat" value="5">selected</eq> value="5">5</option>
+								</select>
+						</div>
+
+						<button type="submit" class="btn btn-default select-btn">搜索</button>
+					</form>
+				</div>
+				<form action="{:U('del')}" method="post" class="del-form">
+				<table class="table table-striped table-bordered responsive">
+					<thead>
+						<tr>
+							<th class="centeralign"><input type="checkbox" class="checkall" /></th>
+							<th>回复的规则</th>
+							<th>回复的类型</th>
+							<th>匹配规则</th>
+							<th class="text-center">规则排序</th>
+							<th>状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<volist name='list' id='vo'>
+						<tr>
+							<td class="centeralign"><input type="checkbox" name='check_box[]' value='{$vo.id}'/></td>
+							<td>{$vo.content}</td>
+							<td class="center">{$vo.module|getRuleKeywordModel}</td>
+							<td class="center">{$vo.type|getRuleKeywordType}</td>
+							<td class="center">{$vo.sort}</td>
+							<td class="centeralign">{$vo['status']|showStatus=$vo['id']}</td>
+							<td class="text-center">
+								<a class="btn btn-info btn-xs ajax-list" href="{:U('edit','id='.$vo['id'])}" data-title="编辑信息">
+									<i class="glyphicon glyphicon-edit icon-white"></i> Edit
+								</a>
+							</td>
+						</tr>
+						</volist>
+							
+					</tbody>
+				</table>
+				</form>
+				<div class="center-block">
+					<ul class="pagination pagination-centered ajax_page">
+						{$page}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--/span-->
+</div>
+<!--/row-->

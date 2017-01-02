@@ -63,7 +63,60 @@ function getParentNodeId($pid){
 function pwdHash($password, $type = 'md5') {
 	return hash ( $type, $password );
 }
-
+/*
+ * 获取 图片地址
+ */
 function getMediaImagUrl($media_id_myurl){
 	return C("OSS_BASE_URL").$media_id_myurl;
+}
+
+/*
+ * 回复规则-类型
+ */
+function getRuleKeywordType($type){
+	switch ($type) {
+		case '1':
+			$text = '匹配';
+			break;
+		case '2':
+			$text = '包含';
+			break;
+		case '3':
+			$text = '正则表达式';
+			break;	
+		default:
+			$text = '没有此规则';
+			break;
+	}
+	return $text;
+}
+
+/*
+ * 回复规则-对应的模块
+ */
+function getRuleKeywordModel($type){
+	switch ($type) {
+		case 'news':
+			$text = '多图文回复';
+			break;
+		case 'basic':
+			$text = '文本回复';
+			break;
+		case 'images':
+			$text = '图片回复';
+			break;	
+		case 'voice':
+			$text = '语音回复';
+			break;	
+		case 'video':
+			$text = '视频回复';
+			break;
+		case 'music':
+			$text = '音乐回复';
+			break;				
+		default:
+			$text = '没有此规则';
+			break;
+	}
+	return $text;
 }

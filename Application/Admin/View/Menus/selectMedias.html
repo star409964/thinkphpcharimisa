@@ -1,10 +1,11 @@
 <div class="modal-dialog">
 	<div class="modal-content">
 		<div class="modal-header">
-			<button class="btn btn-default selectMedias_btn" data-url = "{:U('news')}">图文</button>
-			<button class="btn btn-default btn-primary selectMedias_btn" data-url = "{:U('images')}">图片</button>
+			<button class="btn btn-default selectMedias_btn" data-url = "{:U('news')}" data-type="news">图文</button>
+			<button class="btn btn-default btn-primary selectMedias_btn" data-url = "{:U('images')}" data-type="images">图片</button>
 			<button class="btn btn-default">视频</button>
 			<button class="btn btn-default">语音</button>
+			<button class="btn btn-default selectMedias_btn" data-url = "{:U('mediaBasic')}" data-type="basic">文字内容</button>
 		</div>
 		<div class="modal-body" id="medias_body">
 			
@@ -17,6 +18,7 @@
 		$('.selectMedias_btn').off().on('click',function(){
 			$(this).parents('.modal-header').find('.selectMedias_btn').removeClass('btn-primary');
 			$(this).addClass('btn-primary');
+			$('.lyx_module').val($(this).data('type'));//给 rulekeyword 添加和编辑页面用
 			var url = $(this).data('url');
 			selectMediaAjax(url);
 		});

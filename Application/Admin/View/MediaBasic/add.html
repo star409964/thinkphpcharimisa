@@ -1,0 +1,46 @@
+<form class="form-horizontal model_insert" role="form" method="post" action="{:U('insert')}">
+<input name="media_id" type="hidden" value="{:createNonceStr(32)}" />
+
+	<div class="form-group">
+		<label for="inputEmail3" class="col-sm-3 control-label">标题</label>
+		<div class="col-sm-5">
+			<input type="text" name="title" class="form-control" id="add_title" placeholder="" datatype="s1-8" errormsg="1～8个字符！">
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">状态</label>
+		<div class="col-sm-4">
+			<select name="status" class="form-control">
+				<option value="1">启用</option>
+				<option value="0">禁用</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">回复内容：</label>
+		<div class="col-sm-5">
+			<textarea cols="80" rows="5" name="content" class="form-control" datatype="*" errormsg="回复内容不能空！"></textarea>
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
+</form>
+<script>
+	$('.model_insert').Validform({
+		tiptype:2,
+		ajaxPost:true,
+		callback:function(data){
+			if(data.status==1){
+				$('#myModal').modal('hide');
+				$('.select-btn').click();
+				$('.Validform_close').click();//关闭表单提示框
+				$('[href="#media_basic"]').click();
+			}else{
+				alert(data.content);
+			}
+		}
+	});
+	
+</script>

@@ -59,7 +59,7 @@ class WxChatMsgLogic extends WxChatBaseLogic {
 	 */
 	private function manageText($obj,$wxid){
 		$keyword = trim($obj->Content);
-		$keyword_list = M("RuleKeyword")->where("wxid=".$wxid)->order('displayorder')->select();
+		$keyword_list = M("RuleKeyword")->where("wxid=".$wxid)->order('sort')->select();
 		$now_info = FALSE;
 		foreach ($keyword_list as $key => $value) {
 			if(stristr($keyword,$value['content'])!=FALSE){

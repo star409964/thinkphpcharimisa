@@ -236,6 +236,15 @@ class MenusController extends CommonController {
 		$this->display();
 	}
 	
+	public function mediaBasic() {
+		$map['wxid'] = getWxid();
+		$mode = M("MediaBasic");
+		if (! empty ( $mode )) {
+			$this->_list ( $mode, $map ,'id');
+		}
+		$this->display ();
+	}
+	
 	public function news() {
 		$map['wxid'] = getWxid();
 		$mode = M("MediaNews");

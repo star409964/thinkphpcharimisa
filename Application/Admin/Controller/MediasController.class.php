@@ -46,6 +46,17 @@ class MediasController extends CommonController {
 		$this->display ();
 	}
 	
+	public function mediaBasic() {
+		if (method_exists ( $this, '_filter' )) {
+			$this->_filter ( $map );
+		}
+		$mode = M("MediaBasic");
+		if (! empty ( $mode )) {
+			$this->_list ( $mode, $map ,'id');
+		}
+		$this->display ();
+	}
+	
 	
 	//:  1-news，2-image，3-video，4-voice，5-music
 	public function getMedias($id){

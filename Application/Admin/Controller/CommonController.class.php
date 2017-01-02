@@ -198,6 +198,7 @@ class CommonController extends Controller {
 		if (false === $model->create ()) {
 			$this->ajaxerror($model->getError (), 0);
 		}
+		$model->wxid = getWxid();
 		//保存当前数据对象
 		$list=$model->add ();
 		if ($list!==false) { //保存成功
@@ -291,9 +292,9 @@ class CommonController extends Controller {
 				$condition = array ($pk => array ('in', explode ( ',', $id ) ) );
 				$list=$model->where ( $condition )->setField ( 'status', - 1 );
 				if ($list!==false) {
-					$this->ajaxReturn('成功','json');
+					jsonReturn(1,'删除成功');
 				} else {
-					$this->ajaxReturn('失败','json');
+					jsonReturn(110,'删除失败');
 				}
 			} else {
 				$this->ajaxReturn('非法操作','json');
@@ -311,19 +312,12 @@ class CommonController extends Controller {
 			if (isset ( $id )) {
 				$condition = array ($pk => array ('in', explode ( ',', $id ) ) );
 				if (false !== $model->where ( $condition )->delete ()) {
-					//echo $model->getlastsql();
-					$data['status']  = 1;
-					$data['content'] = '成功';
-					$this->ajaxReturn($data,'json');
+					jsonReturn(1,'删除成功'.$name);
 				} else {
-					$data['status']  = 0;
-					$data['content'] = '失败';
-					$this->ajaxReturn($data,'json');
+					jsonReturn(110,'删除失败');
 				}
 			} else {
-				$data['status']  = -1;
-				$data['content'] = '非法操作';
-				$this->ajaxReturn($data,'json');
+				jsonReturn(120,'非法操作');
 			}
 		}
 		$this->forward ();

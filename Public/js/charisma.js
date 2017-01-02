@@ -519,6 +519,39 @@ function docReady() {
 		});
 }
 	/*
+	 * 删除 单个选项
+	 * 编号：2017-1-1
+	 * */
+	$(document).off('click','.btn_del').on("click",'.btn_del',function(){
+				var that = this;
+				var conf = confirm('确定要删除所选项吗?');
+				if(conf) {
+					var url = $(this).attr('href');
+					$.ajax({
+						url: url,
+						type: 'get',
+						dataType:'json',
+						success: function(res) {
+							if(res.status==1){
+								$(that).parents('.water').remove();
+							}
+						},
+						error:function(e){
+							noty({
+									text: '服务器请求错误',
+									layout: "top",
+									timeout: 1000
+								});
+						}
+					});
+				}
+			return false;
+		});
+
+
+
+
+	/*
 	 * 菜单的ajax list
 	 * 编号：2016-11-21
 	 * */
@@ -528,6 +561,14 @@ function docReady() {
 //		$(this).parents('li').addClass('active');
 		$(this).parent().addClass('active');
 		var th = $(this);
+		contentHtml(url);
+		return false;
+	}));
+	
+	/*
+	 * 加载内容到 content 模块中
+	 */
+	function contentHtml(url){
 		$.ajax({
 			url: url,
 			type: 'get',
@@ -542,8 +583,8 @@ function docReady() {
 					});
 			}
 		});
-		return false;
-	}));
+	}
+	
 	/*
 	 * 列表-查询数据请求
 	 * 2016-11-27

@@ -1,0 +1,84 @@
+<div>
+	<ul class="breadcrumb">
+		<li>
+			<a href="#">微信管理</a>
+		</li>
+		<li>
+			<a href="#">编辑管理</a>
+		</li>
+	</ul>
+</div>
+
+<form class="form-horizontal model_insert" role="form" method="post" action="{:U('update')}">
+	<input type="hidden" name="id" value="{$vo.id}" />
+	<input type="hidden" name="module" class="form-control lyx_module" value="{$vo.module}"/>
+	<div class="form-group">
+		<label for="inputEmail3" class="col-sm-3 control-label">回复内容</label>
+		<div class="col-sm-4">
+			<input type="text" name="content" class="form-control" placeholder="" datatype="s1-8" errormsg="1～8个字符！" value="{$vo.content}">
+		</div>
+		<div class="col-sm-4"></div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">匹配规则</label>
+		<div class="col-sm-3">
+			<select name="group_id" class="form-control" name="type">
+				<option value="1" <eq name="vo.type" value="1">selected</eq>>匹配</option>
+				<option value="2" <eq name="vo.type" value="2">selected</eq>>包含</option>
+			</select>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<label class="col-sm-3 control-label">状态</label>
+		<div class="col-sm-3">
+			<select name="status" class="form-control">
+				<option value="1" <eq name="vo.type" value="1">selected</eq>>启用</option>
+				<option value="0" <eq name="vo.type" value="0">selected</eq>>禁用</option>
+			</select>
+		</div>
+	</div>
+
+
+	<div class="form-group">
+		<label for="inputEmail3" class="col-sm-3 control-label">回复的内容</label>
+		<div class="input-group col-sm-4">
+			<input class="form-control"  name="media_id" value="{$vo.media_id}" type="text" readonly="readonly" datatype="*" errormsg="请选择要回复的内容！">
+			<div class="input-group-btn lyx_xuanzesucai" data-url="{:U('Menus/selectMedias')}">
+				<span class="btn btn-primary"><i class="fa fa-github-alt"></i> 点击选择</span>
+			</div>
+		</div>
+			<div class="col-sm-4"></div>
+	</div>
+
+	<div class="form-group">
+		<label for="inputEmail3" class="col-sm-3 control-label"></label>
+		<button class="btn btn-primary">保存</button>
+	</div>
+
+</form>
+<script>
+	$('.model_insert').Validform({
+		tiptype: 2,
+		ajaxPost: true,
+		callback: function(data) {
+			if(data.status == 1) {
+				contentHtml("{:U('RuleKeyword/index')}");
+				$('.Validform_close').click(); //关闭表单提示框
+			} else {
+				alert(data.content);
+			}
+		}
+	});
+	
+	/*
+ * 选择素材 事件
+ */
+
+$(document).off('click','.lyx_xuanzesucai').on('click','.lyx_xuanzesucai',function(){
+	var that = this;
+	var url = $(that).data('url');
+	model_all_html(url);
+});
+</script>
